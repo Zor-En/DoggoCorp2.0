@@ -11,7 +11,7 @@ import {
 import Menu from './components/Menu';
 
 
-const MainCard = ({ children, sx }) => (
+const MainCard = ({ sx }) => (
     <Box
         sx={{
             borderRadius: 4,
