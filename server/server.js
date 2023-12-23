@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
-import cookieController from './controllers/cookieController.mjs';
+const cookieController = require("./controllers/cookieController");
 
 const PORT = process.env.PORT || 3000;
 
@@ -31,7 +31,6 @@ app.get('/*', (req, res) => {
   app.post(
     "/signup",
     cookieController.setSSIDCookie,
-    sessionController.startSession,
     (req, res) => {
       if (res.locals.session) {
         console.log("Signed up successfully!");
