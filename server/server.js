@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
+const cookieController = require("./controllers/cookieController");
 
 const PORT = process.env.PORT || 3000;
 
@@ -11,6 +13,7 @@ app.use(express.json());
 
     // Enable CORS 
 app.use(cors());
+app.use(cookieParser());
 
 
     //handle static files from our bundler
@@ -22,6 +25,19 @@ app.get('/*', (req, res) => {
     console.log('Received request for:', req.url)
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
   });
+
+
+  //routers
+  app.post(
+    "/signup",
+    cookieController.setSSIDCookie,
+    (req, res) => {
+      if (res.locals.session) {
+        console.log("Signed up successfully!");
+        return res.redirect("/secret");
+      }
+    }
+  );
 
 
 
