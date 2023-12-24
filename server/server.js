@@ -10,6 +10,7 @@ const sessionController = require('./controllers/sessionController');
 
 const PORT = process.env.PORT || 3000;
 
+//sean test
 app.use(express.json());
 
 // Enable CORS

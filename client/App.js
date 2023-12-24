@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignIn from './SignIn';
 import HomePage from './Homepage';
+import SignUp from './SignUp';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { purple } from '@mui/material/colors';
-import Doggo from 'Doggo';
 
 const theme = createTheme({
   palette: {
@@ -40,11 +40,12 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <div className='App'>
-          <Routes>
-            <Route path='/' element={<SignIn />} />
-            <Route path='/homepage' element={<HomePage />} />
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/homepage" element={<HomePage />} />
+          <Route path='/signup' element={<SignUp />} />
             <Route path='/add_dog' element={<Doggo />} />
           </Routes>
         </div>
