@@ -4,12 +4,24 @@ const path = require("path");
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const cookieController = require("./controllers/cookieController");
+const userController = require("./controllers/userController");
+const dogController = require("./controllers/dogController")
+const sessionController = require("./controllers/sessionController")
+const { Pool } = require('pg');
 
 const PORT = process.env.PORT || 3000;
 
 //sean test
-app.use(express.json());
+const pool = new Pool({
+  user: 'jqjdmzsq',
+  host: 'mahmud.db.elephantsql.com',
+  database: 'jqjdmzsq',
+  password: '5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q',
+  port: 5432,
+})
+app.use(userController.createUserTable, dogController.createDogTable);
 
+app.use(express.json());
 
     // Enable CORS 
 app.use(cors());
@@ -27,19 +39,11 @@ app.get('/*', (req, res) => {
   });
 
 
-  //routers
-  app.post(
-    "/signup",
-    cookieController.setSSIDCookie,
-    (req, res) => {
-      if (res.locals.session) {
-        console.log("Signed up successfully!");
-        return res.redirect("/secret");
-      }
-    }
-  );
 
-
+  //logic for adding a new dog **INCOMPLETE**
+// app.post('/addDog', dogController.createDogTable, async (req, res) => {
+//   res.status(200).send('dog created!')
+// })
 
 // catch 404 errors
 app.use("*", (req, res) =>
