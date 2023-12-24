@@ -41,7 +41,6 @@ const HomePage = () => {
       {/* Centered Container */}
       <Grid container item xs={12} justifyContent="center" marginTop="3rem" sx={{ minHeight: 'calc(100vh - 3rem)' }}>{/* calc 100vh - the header */}
         <Grid item xs={10} md={8} lg={7}>
-          {/* Your content goes here */}
           <Grid container alignItems="flex-start" justifyContent="space-between">
             <Grid item>
               <Typography variant="h5">Test 2</Typography>
