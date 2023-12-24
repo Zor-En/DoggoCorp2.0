@@ -4,7 +4,9 @@ const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const cookieController = require('./controllers/cookieController');
+const userController = require('./controllers/userController');
 const dogController = require('./controllers/dogController');
+const sessionController = require('./controllers/sessionController');
 
 const PORT = process.env.PORT || 3000;
 
@@ -24,12 +26,31 @@ app.get('/*', (req, res) => {
 });
 
 //routers
-app.post('/signup', cookieController.setSSIDCookie, (req, res) => {
-  if (res.locals.session) {
-    console.log('Signed up successfully!');
-    return res.redirect('/homepage');
+app.post(
+  '/signup',
+  userController.addUser,
+  sessionController.startSession,
+  cookieController.setSSIDCookie,
+  (req, res) => {
+    if (res.locals.session) {
+      console.log('Signed up successfully!');
+      return res.redirect('/homepage');
+    }
   }
-});
+);
+
+app.use(
+  '/login',
+  userController.verifyUser,
+  sessionController.startSession,
+  cookieController.setSSIDCookie,
+  (req, res) => {
+    if (res.locals.session) {
+      console.log('Logged in successfully!');
+      return res.redirect('/homepage');
+    }
+  }
+);
 
 app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
   res.status(200).json(res.locals.dogs);
@@ -37,6 +58,33 @@ app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
 
 app.post('/addDog', dogController.addDog, (req, res) => {
   res.status(200).json(res.locals.newDog);
+});
+
+app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
+  // if (res.locals.session) {
+  console.log('Going to homepage');
+  return res.redirect('/homepage');
+  // }
+});
+
+//to query dogs
+app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
+  res.status(200).json(res.locals.dogs);
+});
+
+// //to submit to addDogs
+// app.post('/addDog', dogController.createDogTable, (req, res) => {
+//   console.log(
+//     'finished adding dog, sending res.locals.newDog',
+//     res.locals.newDog
+//   );
+//   res.status(200).json(res.locals.newDog);
+// });
+
+//route to add dogs page
+app.get('/addDog', (req, res) => {
+  console.log('going to add dog page');
+  return res.redirect('/homepage');
 });
 
 app.get((req, res) => {
