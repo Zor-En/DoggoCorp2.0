@@ -1,3 +1,4 @@
+
 const pgp = require('pg-promise')();
 const connectionString = 'postgres://jqjdmzsq:5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q@mahmud.db.elephantsql.com/jqjdmzsq'
 const db = pgp(connectionString);
@@ -46,3 +47,4 @@ userController.verifyUser = (req, res, next) => {
 }
 
 module.exports = userController;
+

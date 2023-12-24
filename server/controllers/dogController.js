@@ -1,10 +1,13 @@
+
 const pgp = require('pg-promise')();
 const connectionString = 'postgres://jqjdmzsq:5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q@mahmud.db.elephantsql.com/jqjdmzsq'
 const db = pgp(connectionString);
 
+
 const dogController = {};
 
 //function to initialize the SQL dog table
+
 dogController.createDogTable = async (req, res, next) => {
     counter = 0;
     try { 
@@ -32,6 +35,7 @@ dogController.createDogTable = async (req, res, next) => {
 
 }
 
+
 dogController.fetchDogs = async (req, res, next) => {
   console.log('fetchDogs request body', req.body);
   const userId = req.body.ssid;
@@ -51,7 +55,9 @@ dogController.fetchDogs = async (req, res, next) => {
     return next();
   } else {
     res.locals.dogs = dogs;
+
     return next()};
 };
 
 module.exports = dogController;
+
