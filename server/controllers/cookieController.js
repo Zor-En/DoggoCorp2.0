@@ -8,6 +8,7 @@ cookieController.setCookie = (req, res, next) => {
 
 
 cookieController.setSSIDCookie = (req, res, next) => {
+  console.log('set SSID Cookie')
   if (res.locals.userInfo) {
     const _id = res.locals.userInfo._id;
     res.cookie("ssid", _id.toString(), {
