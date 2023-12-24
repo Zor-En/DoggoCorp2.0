@@ -3,19 +3,6 @@ import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
 
 import Menu from "./components/Menu";
 
-const MainCard = ({ sx }) => (
-  <Box
-    sx={{
-      borderRadius: 4,
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-      overflow: "hidden",
-      ...sx,
-    }}
-  >
-    {/* {children} */}
-  </Box>
-);
-
 const HomePage = () => {
   const [value, setValue] = useState("");
 
