@@ -25,7 +25,7 @@ export default function Menu() {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: 250, padding: '0' }}
+      sx={{ width: 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
