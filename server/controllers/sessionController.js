@@ -13,4 +13,3 @@ sessionController.isLoggedIn = (req, res, next) => {
 }
 
 module.exports = sessionController;
-
