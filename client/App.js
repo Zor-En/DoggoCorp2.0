@@ -5,7 +5,7 @@ import HomePage from './Homepage';
 import SignUp from './SignUp';
 import LandingPage from './LandingPage';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { purple } from '@mui/material/colors';
+import './stylesheets/App.css'
 
 
 const theme = createTheme({
