@@ -3,21 +3,20 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignIn from './SignIn';
 import HomePage from './Homepage';
 import SignUp from './SignUp';
+import LandingPage from './LandingPage';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { purple } from '@mui/material/colors';
+import './stylesheets/App.css'
+
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: purple[500],
+      main: '#6a994e',
     },
     secondary: {
-      main: '#f44336',
+      main: '#9c6644',
     },
   },
-  // typography: {
-  //   fontFamily: 'Poppins', //change
-  // },
   components: {
     MuiButton: {
       styleOverrides: {
@@ -28,11 +27,6 @@ const theme = createTheme({
       },
     },
     MuiCssBaseline: {
-      styleOverrides: {
-        // '@font-face': {
-        //   fontFamily: 'Poppins',
-        // },
-      },
     },
   },
 });
@@ -43,10 +37,11 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/signin" element={<SignIn />} />
+        <Route path="/" element={<LandingPage />} />
+          <Route path="/signin" element={<SignIn id="signin"/>} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path='/signup' element={<SignUp />} />
-            <Route path='/add_dog' element={<Doggo />} />
+            {/* <Route path='/add_dog' element={<Doggo />} /> */}
           </Routes>
         </div>
       </Router>
