@@ -1,19 +1,31 @@
 import React, { useState } from "react";
+import dayjs from 'dayjs';
 import {
     Box,
     Button,
     TextField,
     Typography,
     Input,
-    InputProps,
     InputAdornment,
-    IconButton
+    InputLabelProps,
+    IconButton,
+    InputLabel,
+    FormControl,
+    MenuItem,
+    Select,
+    SelectChangeEvent
 } from '@mui/material';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
+// import { DigitalClock } from '@mui/x-date-pickers/DigitalClock';
+// import DateFnsUtils from '@date-io/date-fns';
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 // import Menu from "./components/Menu";
 
 const DogInputPage = () => {
@@ -22,8 +34,10 @@ const DogInputPage = () => {
         age: '',
         weight: '',
         breed: '',
-        meals: [{ instructions: '', times: ''}],
-        groomers: '',
+        meals: [],
+        medications: [],
+        groomers: [],
+        miscellaneous: [],
         photo: null,
     });
 
@@ -38,8 +52,75 @@ const DogInputPage = () => {
       };
     }
 
+    const handleMealChange = (index, field, value) => {
+      const newMeals = [...dogData.meals];
+      newMeals[index][field] = value;
+      setDogData({ ...dogData, meals: newMeals });
+    };
+
+    const handleAddMeal = () => {
+    const newMeal = { type: '', instructions: '', times: dayjs() };
+    setDogData({ ...dogData, meals: [...dogData.meals, newMeal] });
+};
+
+    const handleRemoveMeal = (index) => {
+      const updatedMeals = dogData.meals.filter((_, i) => i !== index);
+      setDogData({ ...dogData, meals: updatedMeals });
+    };
+
+    const handleMealTypeChange = (index, value) => {
+        const updatedMeals = [...dogData.meals];
+        updatedMeals[index].type = value;
+        setDogData({ ...dogData, meals: updatedMeals });
+    };
+
+    // Handler for adding medication
+    const handleAddMedication = () => {
+      const addMedications = { name: '', instructions: '', date: dayjs() }
+      setDogData({ ...dogData, medications: [...dogData.medications, addMedications] });
+    };
+    
+
+    // Handler for removing medication
+    const handleRemoveMedication = (index) => {
+      const removeMedications = dogData.medications.filter((_, i) => i !== index);
+      setDogData({ ...dogData, medications: removeMedications });
+    };
+
+    // Handler for medication changes
+    const handleMedicationChange = (index, field, value) => {
+        const updateMedications = [...dogData.medications];
+        updateMedications[index][field] = value;
+        setDogData({ ...dogData, medications: updateMedications });
+    };
+
+    // Handler for groomers
+    const handleGroomers = () => {
+      const addGroomers = { name: '', date: dayjs() }
+      setDogData({ ...dogData, groomers: [...dogData.groomers, addGroomers] });
+    };
+
+    // Handler for adding misc
+    const handleAddMisc = () => {
+      const newMisc = { name: '', instructions: '', time: dayjs(), date: dayjs() };
+      setDogData({ ...dogData, miscellaneous: [...dogData.miscellaneous, newMisc] });
+    };
+  
+    // Handler for removing misc
+    const handleRemoveMisc = (index) => {
+      const newMisc = dogData.miscellaneous.filter((_, i) => i !== index);
+      setDogData({ ...dogData, miscellaneous: newMisc});
+    };
+  
+    // Handler for misc changes
+    const handleMiscChange = (index, field, value) => {
+        const newMisc = [...dogData.misc];
+        newMisc[index][field] = value;
+        setDogData({ ...dogData, misc: newMisc });
+    };
+
     const handlePhotoChange = (e) => {
-        setDogData({ ...dogData, photo: e.target.files[0] });
+      setDogData({ ...dogData, photo: e.target.files[0] });
     };
 
     const handleSubmit = (e) => {
@@ -48,27 +129,31 @@ const DogInputPage = () => {
         // Submit logic here
     };
 
-    const handleMealChange = (index, field, value) => {
-      const newMeals = [...dogData.meals];
-      newMeals[index][field] = value;
-      setDogData({ ...dogData, meals: newMeals });
-    };
-
-    const handleAddMeal = () => {
-        setDogData({ ...dogData, meals: [...dogData.meals, { instructions: '', times: '' }] });
-    };
-
-    const handleRemoveMeal = (index) => {
-        const newMeals = [...dogData.meals];
-        if (newMeals.length > 1) {
-            newMeals.splice(index, 1);
-            setDogData({ ...dogData, meals: newMeals });
-        }
-    };
 
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexWrap: 'wrap' }}>
-          <Typography variant="h6">Add Your Dog's Information</Typography>
+      <Box 
+            display="flex" 
+            justifyContent="center" 
+            alignItems="center" 
+            minHeight="100vh" // Full screen height
+            // sx={{ backgroundColor: 'pink' }}
+        >
+        <Box 
+          component="form" 
+          onSubmit={handleSubmit} 
+          noValidate 
+          sx={{ 
+                display: 'flex', 
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 3,
+                boxShadow: 3, 
+                borderRadius: 2,
+                backgroundColor: 'background.paper'
+
+              }}>
+          <Typography variant="h4" textAlign="center">Add Your Dog's Information</Typography>
           <TextField
             label="Dog's Name"
             name="name"
@@ -79,7 +164,9 @@ const DogInputPage = () => {
             fullWidth
             autoFocus
             margin="normal"
-          />       
+            
+          />  
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
           <TextField
             label="Age"
             name="age"
@@ -87,10 +174,7 @@ const DogInputPage = () => {
             value={dogData.age}
             onChange={handleChange}
             required
-            sx={{ m: 1, width: '25ch' }}
-            fullWidth
-            margin="normal"
-            
+            sx={{ m: 1, flex: 1 }}  
           />
           <TextField 
             label="Weight"
@@ -99,11 +183,12 @@ const DogInputPage = () => {
             value={dogData.weight}
             onChange={handleChange}
             required
-            sx={{ m: 1, width: '25ch' }}
+            sx={{ m: 1, flex: 1 }}
             InputProps={{
               endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
             }}
           />
+          </Box>
           <TextField
             label="Breed"
             name="breed"
@@ -114,41 +199,194 @@ const DogInputPage = () => {
             onChange={handleChange}
           />
             {/* handles meals adding/subtracting */}
-            {dogData.meals.map((meal, index) => (
-            <Box key={index} sx={{ display: 'flex', alignItems: 'center', width: '100%', mb: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', mb: 2 }}>
+                <Typography variant="h6" sx={{ mr: 2 }}>Add Meals</Typography>
+                <IconButton onClick={handleAddMeal}>
+                    <AddCircleOutlineIcon />
+                </IconButton>
+          </Box>
+          
+          {dogData.meals.map((meal, index) => (
+            <Box key={index} sx={{ width: '100%', mb: 2 }}>
+              <Typography sx={{ mr: 2, marginBottom: 2 }}>{`Meal ${index + 1}:`}</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <FormControl sx={{ mr: 1, flex: 1 }}>
+                <InputLabel htmlFor={`meal-type-select-${index}`} >Meal Type</InputLabel>
+                  <Select
+                    focused
+                      labelId={`meal-type-label-${index}`}
+                      label="Meal Type"
+                      id={`meal-type-select-${index}`}
+                      value={meal.type}
+                      onChange={(e) => handleMealTypeChange(index, e.target.value)}
+                  >
+                      <MenuItem value="Breakfast">Breakfast</MenuItem>
+                      <MenuItem value="Lunch">Lunch</MenuItem>
+                      <MenuItem value="Dinner">Dinner</MenuItem>
+                      <MenuItem value="Snack">Snack</MenuItem>
+                  </Select>
+                </FormControl>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <TimePicker 
+                    label='Time'
+                    name={`meal-${index}-time`}
+                    value={meal.times}
+                    onChange={(newTime) => handleMealChange(index, 'times', newTime)}
+                    renderInput={(params) => <TextField {...params} sx={{ flex: 2 }} />}
+                  />
+                </LocalizationProvider>
+                </Box>
                 <TextField
-                    label={`Meal ${index + 1} Instructions`}
+                    label='Instructions:'
+                    fullWidth
+                    multiline
                     name={`meal-${index}-instructions`}
-                    type="text"
                     value={meal.instructions}
                     onChange={handleChange}
-                    fullWidth
                     margin="normal"
                 />
-                <TextField
-                    label={`Meal ${index + 1} Times`}
-                    name={`meal-${index}-times`}
-                    type="text"
-                    value={meal.times}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                />
-                {index === dogData.meals.length - 1 && (
-                    <IconButton onClick={handleAddMeal}>
-                        <AddCircleOutlineIcon />
-                    </IconButton>
-                )}
-                {dogData.meals.length > 1 && (
+          
                     <IconButton onClick={() => handleRemoveMeal(index)}>
                         <RemoveCircleOutlineIcon />
                     </IconButton>
-                )}
+            </Box>
+          ))}
+          {/* handles meds adding/subtracting */}
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', mb: 2 }}>
+                <Typography variant="h6" sx={{ mr: 2 }}>Add Medication</Typography>
+                <IconButton onClick={handleAddMedication}>
+                    <AddCircleOutlineIcon />
+                </IconButton>
+          </Box> 
+          
+          {dogData.medications.map((medications, index) => (
+            <Box key={index} sx={{ width: '100%', mb: 2 }}>
+              <Typography sx={{ mr: 2, mb: 2 }}>{`Medication ${index + 1}:`}</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+            <FormControl sx={{ mr: 1, flex: 1 }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <TimePicker 
+                    label='Time'
+                    name={`medications-${index}-time`}
+                    value={medications.times}
+                    onChange={(newTime) => handleMedicationChange(index, 'times', newTime)}
+                    renderInput={(params) => <TextField {...params} sx={{ flex: 2 }} />}
+                  />
+                </LocalizationProvider>
+                </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker 
+                    label='Date'
+                    name={`medications-${index}-date`}
+                    value={medications.times}
+                    onChange={(newDate) => handleMedicationChange(index, 'date', newTime)}
+                    renderInput={(params) => <TextField {...params} sx={{ flex: 2 }} />}
+                  />
+                </LocalizationProvider>
+                </Box>
+                <TextField
+                    label='Instructions:'
+                    fullWidth
+                    multiline
+                    name={`medications-${index}-instructions`}
+                    value={medications.instructions}
+                    onChange={handleChange}
+                    margin="normal"
+                />
+              <IconButton onClick={() => handleRemoveMedication(index)}>
+                  <RemoveCircleOutlineIcon />
+              </IconButton>
+            </Box>
+          ))}
+
+          {/* handles groomers */}
+          {dogData.groomers.map((groomers, index) => (
+            <Box key={index} sx={{ width: '100%', mb: 2 }}>
+              <Typography sx={{ mr: 2 }}>Groomers</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <FormControl sx={{ mr: 1, flex: 1 }}>
+                <InputLabel htmlFor={`groomers-type-select-${index}`} shrink>Groomer Name</InputLabel>
+                <TextField label="Groomers" type="text" fullWidth margin="normal" />
+                </FormControl>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <TimePicker 
+                    label='Time'
+                    name='groomers-time'
+                    value={groomers.times}
+                    onChange={(newTime) => handleGroomers(index, 'times', newTime)}
+                    renderInput={(params) => <TextField {...params} sx={{ flex: 2 }} />}
+                  />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker 
+                    label='Date'
+                    name='groomers-date'
+                    value={groomers.times}
+                    onChange={(newDate) => handleGroomers(index, 'date', newTime)}
+                    renderInput={(params) => <TextField {...params} sx={{ flex: 2 }} />}
+                  />
+                </LocalizationProvider>
+                </Box>
+                <TextField
+                    label='Instructions:'
+                    fullWidth
+                    multiline
+                    name={`groomers-${index}-instructions`}
+                    value={groomers.instructions}
+                    onChange={handleChange}
+                    margin="normal"
+                />
+            </Box>
+          ))}
+
+           {/* handles misc adding/subtracting */}
+           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', mb: 2 }}>
+                <Typography variant="h6" sx={{ mr: 2 }}>Add Miscellaneous</Typography>
+                <IconButton onClick={handleAddMisc}>
+                    <AddCircleOutlineIcon />
+                </IconButton>
+          </Box> 
+          
+          {dogData.miscellaneous.map((miscellaneous, index) => (
+            <Box key={index} sx={{ width: '100%', mb: 2 }}>
+              <Typography sx={{ mr: 2, marginBottom: 2 }}>{`Misc ${index + 1}:`}</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+            <FormControl sx={{ mr: 1, flex: 1 }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <TimePicker 
+                    label='Time'
+                    name={`misc-${index}-time`}
+                    value={miscellaneous.times}
+                    onChange={(newTime) => handleMiscChange(index, 'times', newTime)}
+                    renderInput={(params) => <TextField {...params} sx={{ flex: 2 }} />}
+                  />
+                </LocalizationProvider>
+                </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker 
+                    label='Date'
+                    name={`miscellaneous-${index}-date`}
+                    value={miscellaneous.times}
+                    onChange={(newDate) => handleMiscChange(index, 'date', newTime)}
+                    renderInput={(params) => <TextField {...params} sx={{ flex: 2 }} />}
+                  />
+                </LocalizationProvider>
+                </Box>
+                <TextField
+                    label='Instructions:'
+                    fullWidth
+                    multiline
+                    name={`misc-${index}-instructions`}
+                    value={miscellaneous.instructions}
+                    onChange={handleChange}
+                    margin="normal"
+                />
+                <IconButton onClick={() => handleRemoveMisc(index)}>
+                    <RemoveCircleOutlineIcon />
+                </IconButton>
             </Box>
           ))}
           
-          <TextField label="Medication" type="text" fullWidth margin="normal" />
-          <TextField label="Groomers" type="text" fullWidth margin="normal" />
           <Input
             type="file"
             name="photo"
@@ -163,6 +401,7 @@ const DogInputPage = () => {
             Submit
           </Button>
         </Box>
+      </Box>
       )
     };
  

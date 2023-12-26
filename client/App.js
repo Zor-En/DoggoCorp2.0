@@ -7,7 +7,8 @@ import LandingPage from './LandingPage';
 import DogInputPage from './Doggo';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { purple } from '@mui/material/colors';
-
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const theme = createTheme({
   palette: {
@@ -34,19 +35,21 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-    <Router>
-      <div className="App">
-        <Routes>
-        <Route path="/" element={<LandingPage />} />
-          <Route path="/signin" element={<SignIn id="signin"/>} />
-          <Route path="/homepage" element={<HomePage />} />
-          <Route path='/signup' element={<SignUp />} />
-            <Route path='/addDog' element={<DogInputPage />} />
-          </Routes>
-        </div>
-      </Router>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <ThemeProvider theme={theme}>
+      <Router>
+        <div className="App">
+          <Routes>
+          <Route path="/" element={<LandingPage />} />
+            <Route path="/signin" element={<SignIn id="signin"/>} />
+            <Route path="/homepage" element={<HomePage />} />
+            <Route path='/signup' element={<SignUp />} />
+              <Route path='/addDog' element={<DogInputPage />} />
+            </Routes>
+          </div>
+        </Router>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 
