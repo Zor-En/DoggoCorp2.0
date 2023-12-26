@@ -33,7 +33,7 @@ export default function MainCard() {
       <Card sx={cardStyle} variant='outlined' raised='true'>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="Dog Init">
               J
             </Avatar>
           }
@@ -57,7 +57,7 @@ export default function MainCard() {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
+          <IconButton aria-label="Unsure">
             <SportsMartialArtsIcon />
           </IconButton>
           <IconButton aria-label="share">
@@ -68,7 +68,7 @@ export default function MainCard() {
       <Card sx={cardStyle} variant='outlined' raised='true'>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="Dog Init">
               J
             </Avatar>
           }
@@ -92,7 +92,7 @@ export default function MainCard() {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
+          <IconButton aria-label="Unsure">
             <SportsMartialArtsIcon />
           </IconButton>
           <IconButton aria-label="share">
