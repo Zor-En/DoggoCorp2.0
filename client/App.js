@@ -4,6 +4,7 @@ import SignIn from './SignIn';
 import HomePage from './Homepage';
 import SignUp from './SignUp';
 import LandingPage from './LandingPage';
+import DogInputPage from './Doggo';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { purple } from '@mui/material/colors';
 
@@ -41,7 +42,7 @@ function App() {
           <Route path="/signin" element={<SignIn id="signin"/>} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path='/signup' element={<SignUp />} />
-            {/* <Route path='/add_dog' element={<Doggo />} /> */}
+            <Route path='/addDog' element={<DogInputPage />} />
           </Routes>
         </div>
       </Router>

@@ -45,10 +45,10 @@ app.get('/*', (req, res) => {
 // app.post('/addDog', dogController.createDogTable, async (req, res) => {
 //   res.status(200).send('dog created!')
 // })
-=======
-  console.log('Received request for:', req.url);
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-});
+// =======
+//   console.log('Received request for:', req.url);
+//   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+// });
 
 //routers
 app.post(
@@ -81,9 +81,9 @@ app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
   res.status(200).json(res.locals.dogs);
 });
 
-app.post('/addDog', dogController.addDog, (req, res) => {
-  res.status(200).json(res.locals.newDog);
-});
+// app.post('/addDog', dogController.addDog, (req, res) => {
+//   res.status(200).json(res.locals.newDog);
+// });
 
 app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
   // if (res.locals.session) {

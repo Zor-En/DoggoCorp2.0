@@ -23,7 +23,7 @@ userController.createUserTable = async (req, res, next) => {
     }   
     catch (err) {
       return(next({
-        log: `Error happened at middleware create user Table: ${error}`,
+        log: `Error happened at middleware create user Table: ${err}`,
         message: { error: 'User Table not created' }}
       ));
 }
