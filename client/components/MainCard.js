@@ -38,7 +38,7 @@ export default function MainCard() {
             </Avatar>
           }
           action={
-            <IconButton aria-label="settings">
+            <IconButton aria-label="dog-settings">
               <MoreVertIcon />
             </IconButton>
           }
@@ -73,7 +73,7 @@ export default function MainCard() {
             </Avatar>
           }
           action={
-            <IconButton aria-label="settings">
+            <IconButton aria-label="dog-settings">
               <MoreVertIcon />
             </IconButton>
           }
