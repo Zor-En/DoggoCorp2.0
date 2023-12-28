@@ -6,6 +6,8 @@ import SignUp from './SignUp';
 import LandingPage from './LandingPage';
 import { createTheme, ThemeProvider } from '@mui/material';
 import './stylesheets/App.css'
+import { useEffect } from 'react';
+
 
 
 const theme = createTheme({
@@ -32,6 +34,7 @@ const theme = createTheme({
 });
 
 function App() {
+
   return (
     <ThemeProvider theme={theme}>
     <Router>
