@@ -28,7 +28,7 @@ export default function MainCard() {
 
   return (
     <div style={containerStyle}>
-      <Card sx={cardStyle} variant="outlined" raised="true">
+      <Card sx={cardStyle} variant="outlined" raised={true}>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="Dog Init">
@@ -63,7 +63,7 @@ export default function MainCard() {
           </IconButton>
         </CardActions>
       </Card>
-      <Card sx={cardStyle} variant="outlined" raised="true">
+      <Card sx={cardStyle} variant="outlined" raised={true}>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="Dog Init">

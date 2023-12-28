@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const cors = require('cors');
+// const cors = require('cors');
 
 const cookieParser = require("cookie-parser");
 const cookieController = require("./controllers/cookieController");
@@ -26,7 +26,7 @@ app.use(userController.createUserTable, dogController.createDogTable);
 
 app.use(express.json());
 
-app.use(cors());
+// app.use(cors());
 app.use(cookieParser());
 
 //handle static files from our bundler
@@ -34,7 +34,6 @@ app.use(express.static(path.resolve(__dirname, 'build')));
 
 //direct to bundled HTML file on root
 app.get('/*', (req, res) => {
-
     console.log('Received request for:', req.url)
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
   });
@@ -45,10 +44,7 @@ app.get('/*', (req, res) => {
 // app.post('/addDog', dogController.createDogTable, async (req, res) => {
 //   res.status(200).send('dog created!')
 // })
-// =======
-//   console.log('Received request for:', req.url);
-//   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-// });
+
 
 //routers
 app.post(
