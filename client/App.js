@@ -8,7 +8,9 @@ import DogInputPage from "./Doggo";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { purple } from "@mui/material/colors";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";import { useEffect } from 'react';
+
+
 
 const theme = createTheme({
   palette: {
@@ -33,6 +35,7 @@ const theme = createTheme({
 });
 
 function App() {
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ThemeProvider theme={theme}>
