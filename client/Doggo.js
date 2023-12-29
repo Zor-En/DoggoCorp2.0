@@ -202,7 +202,9 @@ const DogInputPage = () => {
     <>
       {/* for custom cursor */}
       <style
-        dangerouslySetInnerHTML={{__html: `body { cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur113.cur'), auto;}`,}}
+        dangerouslySetInnerHTML={{
+          __html: `body { cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur113.cur'), auto;}`,
+        }}
       />
       <div>
         <Sky />
@@ -241,8 +243,11 @@ const DogInputPage = () => {
               fontFamily={"Pixelify Sans"}
               sx={{
                 color: "pink",
-                textShadow: "2px 2px hotpink",
-                // textShadow:"-1px 0 hotpink, 0 1px hotpink, 1px 0 hotpink, 0 -1px hotpink",
+              //   textShadow:
+              //     "-1px -1px white, 1px 1px hotpink, 3px 3px hotpink, 4px 4px 4px #9e9e9e",
+              // }}
+              textShadow:
+                  "-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e",
               }}
             >
               Add Your Dog's Information

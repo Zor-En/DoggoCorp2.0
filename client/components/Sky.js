@@ -7,6 +7,7 @@ import cloud_4 from "../../assets/cloud_4.png";
 
 const Sky = () => {
   const skyColor = blue[200];
+//   const skyColor = '#81d4fa';
 
   const skyStyle = {
     position: "fixed", // or absolute?
