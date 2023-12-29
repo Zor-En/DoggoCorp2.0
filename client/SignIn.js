@@ -10,6 +10,10 @@ import SnackbarAlert from "./components/SnackbarAlert";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useNavigate } from "react-router";
 import { useGoogleLogin, GoogleLogin } from "react-google-login";
+import Sky from "./components/Sky";
+import HeaderDog from "./components/HeaderDog";
+import Footers from "./components/Footer";
+
 
 export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -94,6 +98,8 @@ export default function SignIn() {
 
   return (
     <div className="login">
+      <Sky />
+      <Footers />
       <Box
         sx={{
           display: "flex",

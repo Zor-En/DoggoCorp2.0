@@ -19,40 +19,19 @@ import {
   SelectChangeEvent,
   Tooltip,
 } from "@mui/material";
-
-//for custom file upload button
-// import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-// import { styled } from "@mui/material/styles";
-
-//TEMPORARY
 import { blue } from "@mui/material/colors";
-//   const blue = {
-//       *50: '#e3f2fd',
-//       *100: '#bbdefb',
-//       *200: '#90caf9',
-//       *300: '#64b5f6',
-//       400: '#42a5f5',
-//       500: '#2196f3',
-//       600: '#1e88e5',
-//       700: '#1976d2',
-//       800: '#1565c0',
-//       900: '#0d47a1',
-//       A100: '#82b1ff',
-//       A200: '#448aff',
-//       A400: '#2979ff',
-//   };
-
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-
-// import { DigitalClock } from '@mui/x-date-pickers/DigitalClock';
-// import DateFnsUtils from '@date-io/date-fns';
-
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import Menu from "./components/Menu";
+//for custom file upload button
+// import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+// import { styled } from "@mui/material/styles";
+// import { DigitalClock } from '@mui/x-date-pickers/DigitalClock';
+// import DateFnsUtils from '@date-io/date-fns';
+
 
 const DogInputPage = () => {
   const [dogData, setDogData] = useState({
@@ -193,26 +172,13 @@ const DogInputPage = () => {
   //   width: 1,
   // });
 
-  //cursor html
-  // https://cur.cursors-4u.net/cursors/cur-2/cur113.cur (funny dog)
-  //https://cur.cursors-4u.net/nature/nat-10/nat984.cur (paw)
+
   const boxBorder = blue[50];
 
   return (
-    <>
-      {/* for custom cursor */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `body { cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur113.cur'), auto;}`,
-        }}
-      />
       <div>
         <Sky />
         <HeaderDog />
-        <style>
-          @import
-          url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&family=Pixelify+Sans:wght@700&display=swap');
-        </style>
         <Box
           display="flex"
           justifyContent="center"
@@ -701,7 +667,6 @@ const DogInputPage = () => {
         </Box>
         <Footers />
       </div>
-    </>
   );
 };
 
