@@ -1,36 +1,34 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
-import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { red } from "@mui/material/colors";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
+import SportsMartialArtsIcon from "@mui/icons-material/SportsMartialArts";
 
 export default function MainCard() {
+  const cardStyle = {
+    maxWidth: 345,
+    flexBasis: "calc(50% - 30px)",
+    margin: "8px",
+  };
 
-    const cardStyle = {
-        maxWidth: 345,
-        flexBasis: 'calc(50% - 30px)',
-        margin: '8px',
-      };
-      
-      const containerStyle = {
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '16px',
-        justifyContent: 'center',
-      };
+  const containerStyle = {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "16px",
+    justifyContent: "center",
+  };
 
-
- return (
+  return (
     <div style={containerStyle}>
-      <Card sx={cardStyle} variant='outlined' raised='true'>
+      <Card sx={cardStyle} variant="outlined" raised="true">
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="Dog Init">
@@ -38,7 +36,7 @@ export default function MainCard() {
             </Avatar>
           }
           action={
-            <IconButton aria-label="dog-settings">
+            <IconButton aria-label="settings">
               <MoreVertIcon />
             </IconButton>
           }
@@ -65,7 +63,7 @@ export default function MainCard() {
           </IconButton>
         </CardActions>
       </Card>
-      <Card sx={cardStyle} variant='outlined' raised='true'>
+      <Card sx={cardStyle} variant="outlined" raised="true">
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="Dog Init">
@@ -73,7 +71,7 @@ export default function MainCard() {
             </Avatar>
           }
           action={
-            <IconButton aria-label="dog-settings">
+            <IconButton aria-label="settings">
               <MoreVertIcon />
             </IconButton>
           }

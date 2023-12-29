@@ -83,7 +83,6 @@ app.get('/*', (req, res) => {
 // app.post('/addDog', dogController.createDogTable, async (req, res) => {
 //   res.status(200).send('dog created!')
 // })
-
 //   console.log('Received request for:', req.url);
 //   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 // });
