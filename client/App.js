@@ -11,6 +11,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const theme = createTheme({
+  typography: {
+
+  },
   palette: {
     primary: {
       main: "#6a994e",
@@ -22,13 +25,24 @@ const theme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
+
         root: {
           borderRadius: 30,
           padding: 15,
         },
       },
     },
-    MuiCssBaseline: {},
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Pixelify Sans';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: local('Pixelify Sans'), @import
+          url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&family=Pixelify+Sans:wght@700&display=swap');
+        }`,
+    },
   },
 });
 

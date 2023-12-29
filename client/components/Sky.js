@@ -5,22 +5,6 @@ import cloud_2 from "../../assets/cloud_2.png";
 import cloud_3 from "../../assets/cloud_3.png";
 import cloud_4 from "../../assets/cloud_4.png";
 
-//   const blue = {
-//       50: '#e3f2fd',
-//       100: '#bbdefb',
-//       200: '#90caf9',
-//       300: '#64b5f6',
-//       400: '#42a5f5',
-//       500: '#2196f3',
-//       600: '#1e88e5',
-//       700: '#1976d2',
-//       800: '#1565c0',
-//       900: '#0d47a1',
-//       A100: '#82b1ff',
-//       A200: '#448aff',
-//       A400: '#2979ff',
-//   };
-
 const Sky = () => {
   const skyColor = blue[200];
 
@@ -54,7 +38,6 @@ const Sky = () => {
     imageRendering: "pixelated",
     width: "250px",
     height: "auto",
-    // animation: "move2",
     animation: "move",
     animationDelay: "-60s",
     
@@ -66,7 +49,6 @@ const Sky = () => {
     imageRendering: "pixelated",
     width: "280px",
     height: "auto",
-    // animation: "move3",
     animation: "move",
     animationDelay: "-01s",
     transform: "scaleX(-1)",
@@ -78,7 +60,6 @@ const Sky = () => {
     imageRendering: "pixelated",
     width: "250px",
     height: "auto",
-    // animation: "move3",
     animation: "move",
     animationDelay: "-75s",
   };
@@ -90,7 +71,6 @@ const Sky = () => {
     width: "250px",
     height: "auto",
     animation: "move",
-    // animation: "move4",
     animationDelay: "-30s",
   };
 
