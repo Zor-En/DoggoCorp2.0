@@ -37,6 +37,40 @@ export default function SignIn() {
     navigate("/signup");
   };
 
+  // // sends user token to server for verification
+  // const sendTokenToServer = async (token) => {
+  //   try {
+  //     const response = await fetch("http://localhost:3000/verify-token", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ token }),
+  //     });
+
+  //     setLoading(true);
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       console.log("Token verified successfully");
+  //       // show snackbar message
+  //       navigate("/homepage");
+  //     } else {
+  //       // turn off loading bar
+  //       setLoading(false);
+  //       console.error("Token verification failed:", data.error);
+  //     }
+  //   } catch (error) {
+  //     // show snackbar message that log in failed
+  //     setSnackbarMessage("Login failed!");
+  //     setSnackbarSeverity("error");
+  //     setSnackbarOpen(true);
+  //     console.error("Error during token verification:", error);
+  //   }
+  // };
+
   const handleSignIn = async () => {
     try {
       // initiate loading bar

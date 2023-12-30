@@ -7,13 +7,18 @@ import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import { useNavigate } from 'react-router';
 
 
 export default function Menu() {
+  const navigate = useNavigate();
   const [state, setState] = React.useState({
-
     left: false,
   });
+
+  const handleSignOut = () => {
+    navigate('/')
+  }
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -42,7 +47,7 @@ export default function Menu() {
       <Divider />
       <List>
         {['Sign Out'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem key={text} disablePadding onClick={handleSignOut}>
             <ListItemButton>
 
               <ListItemText primary={text} />
