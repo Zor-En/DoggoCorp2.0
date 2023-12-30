@@ -64,13 +64,13 @@ const theme = createTheme({
 
 function App() {
   return (
-<<<<<<< HEAD
   <>
     <style dangerouslySetInnerHTML={{__html: `body { cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur113.cur'), auto;}`,}}/>  
     <style>
           @import
           url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&family=Pixelify+Sans:wght@700&display=swap');
         </style>
+    <AuthProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
           <Router>
@@ -86,26 +86,8 @@ function App() {
           </Router>
         </ThemeProvider>
       </LocalizationProvider>
-    </>
-=======
-    <AuthProvider>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <div className="App">
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/signin" element={<SignIn id="signin" />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/homepage" element={<HomePage />} />
-              <Route path="/addDog" element={<DogInputPage />} />
-            </Routes>
-          </div>
-        </Router>
-      </ThemeProvider>
-    </LocalizationProvider>
     </AuthProvider>
->>>>>>> dev
+    </>  
   );
 }
 
