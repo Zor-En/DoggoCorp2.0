@@ -58,7 +58,6 @@ const theme = createTheme({
   },
 });
 
-import { useAuth } from './components/Authorization';
 
 const HomePage = () => {
   const [value, setValue] = useState("");
