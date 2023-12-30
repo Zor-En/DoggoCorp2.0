@@ -11,6 +11,9 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from "react-router";
 import { useAuth } from './components/Authorization';
 import PhoneNumberField from "./components/PhoneNumField";
+import Sky from "./components/Sky";
+import HeaderDog from "./components/HeaderDog";
+import Footers from "./components/Footer";
 
 export default function SignUp() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -140,23 +143,27 @@ export default function SignUp() {
   }, []);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <Card sx={{ maxWidth: 400, width: "100%", p: 3 }}>
-        <Box textAlign="center" mb={2}>
-          <Typography variant="h4" fontWeight="medium">
-            Sign Up
-          </Typography>
-        </Box>
+    <>
+      <Sky />
+      <Footers />
 
-        <Box component="form" id="form">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Card sx={{ maxWidth: 400, width: "100%", p: 3 }}>
+          <Box textAlign="center" mb={2}>
+            <Typography variant="h4" fontWeight="medium">
+              Sign Up
+            </Typography>
+          </Box>
+
+          <Box component="form" id="form">
           {/* Add fields for first name and last name */}
           <Box display="flex" gap={2}>
             <TextField
@@ -175,53 +182,71 @@ export default function SignUp() {
             />
             </Box>
             < PhoneNumberField />
-          <TextField
-            label="Username"
+            <TextField
+              label="Username"
             name="userName"
-            type="username"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Password"
+              type="username"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Password"
             name="password"
-            type="password"
-            fullWidth
-            margin="normal"
-          />
-          <Box display="flex" alignItems="center"  mt={2}>
-            <Switch checked={rememberMe} onChange={handleSetRememberMe} />
+              type="password"
+              fullWidth
+              margin="normal"
+            />
+            <Box display="flex" alignItems="center" mt={2}>
+              <Switch checked={rememberMe} onChange={handleSetRememberMe} />
+              <Typography variant="body2" color="textSecondary">
+                &nbsp;&nbsp;Remember me
+              </Typography>
+              <Switch
+                checked={watcher}
+                onChange={handleSetWatcher}
+                sx={{ marginLeft: "25px" }}
+              />
+              <Typography variant="body2" color="textSecondary">
+                &nbsp;&nbsp;Sign In as Watcher
+              </Typography>
+            </Box>
+            <Button
+              variant="text"
+              color="primary"
+              fullWidth
+              mt={2} /*
+              onClick={handleSignIn}*/
+              disabled={loading}
+            >
+              Sign In
+            </Button>
+            {loading && (
+              <LinearProgress color="primary" sx={{ marginTop: 2 }} />
+            )}
+            <SnackbarAlert
+              open={snackbarOpen}
+              onClose={handleSnackbarClose}
+              message={snackbarMessage}
+              severity={snackbarSeverity}
+            />
+          </Box>
+
+          <Box mt={2} textAlign="center">
             <Typography variant="body2" color="textSecondary">
-              &nbsp;&nbsp;Remember me
-            </Typography>
-            <Switch checked={watcher} onChange={handleSetWatcher} sx={{marginLeft: '25px'}}/>
-            <Typography variant="body2" color="textSecondary">
-              &nbsp;&nbsp;Sign In as Watcher
+              Have an account?{" "}
+              <Link
+                variant="body2"
+                style={{ cursor: "pointer" }}
+                onClick={handleSignInClick}
+              >
+                Sign In
+              </Link>
             </Typography>
           </Box>
-          <Button variant="text" color="primary" fullWidth mt={2} /* onClick={handleSignIn}*/ disabled={loading}>
-            Sign In
-          </Button>
-          {loading && <LinearProgress color="primary" sx={{ marginTop: 2 }} />}
-          <SnackbarAlert
-            open={snackbarOpen}
-            onClose={handleSnackbarClose}
-            message={snackbarMessage}
-            severity={snackbarSeverity}
-          />
-        </Box>
-
-        <Box mt={2} textAlign="center">
-          <Typography variant="body2" color="textSecondary">
-            Have an account?{" "}
-            <Link variant="body2" style={{ cursor: 'pointer' }} onClick={handleSignInClick}>
-              Sign In
-            </Link>
-          </Typography>
-        </Box>
-      </Card>
+        </Card>
       <div id="sign-in-div"></div>
-    </Box>
+      </Box>
+    </>
   );
 }
 

@@ -1,9 +1,16 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+<<<<<<< HEAD
+// const cors = require('cors');
+
+const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
+=======
 const cors = require('cors');
 const { OAuth2Client } = require('google-auth-library');
 const cookieParser = require('cookie-parser');
+>>>>>>> dev
 const { Pool } = require('pg');
 
 const cookieController = require('./controllers/cookieController');
@@ -66,13 +73,29 @@ app.post('/verify-token', async (req, res) => {
 // app.use(userController.createUserTable, dogController.createDogTable);
 
 
+<<<<<<< HEAD
+
+// app.use(cors());
+app.use(cookieParser());
+
+//handle static files from our bundler
+app.use(express.static(path.resolve(__dirname, 'build')));
+
+//direct to bundled HTML file on root
+app.get('/*', (req, res) => {
+    console.log('Received request for:', req.url)
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+  });
+
+
+
+  //logic for adding a new dog **INCOMPLETE**
+=======
 //logic for adding a new dog **INCOMPLETE**
+>>>>>>> dev
 // app.post('/addDog', dogController.createDogTable, async (req, res) => {
 //   res.status(200).send('dog created!')
 // })
-//   console.log('Received request for:', req.url);
-//   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-// });
 
 //routers
 // app.post(

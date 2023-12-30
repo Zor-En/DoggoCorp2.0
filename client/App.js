@@ -14,7 +14,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AuthProvider } from "./components/Authorization";
 
+
+  //cursor html
+  // https://cur.cursors-4u.net/cursors/cur-2/cur113.cur (funny dog)
+  //https://cur.cursors-4u.net/nature/nat-10/nat984.cur (paw)
+
 const theme = createTheme({
+  typography: {},
   palette: {
     primary: {
       main: "#6a994e",
@@ -32,12 +38,56 @@ const theme = createTheme({
         },
       },
     },
-    MuiCssBaseline: {},
+    MuiCssBaseline: {
+      styleOverrides: `
+      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&family=Pixelify+Sans:wght@700&display=swap');
+       
+      @font-face {
+          font-family: 'Pixelify Sans';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: local('Pixelify Sans'), url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&family=Pixelify+Sans:wght@700&display=swap') 
+          format('woff2');
+
+          @font-face {
+          font-family: 'Oswald';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: local('Oswald'), url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&display=swap') format('woff2');
+     
+        }`,
+    },
   },
 });
 
 function App() {
   return (
+<<<<<<< HEAD
+  <>
+    <style dangerouslySetInnerHTML={{__html: `body { cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur113.cur'), auto;}`,}}/>  
+    <style>
+          @import
+          url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&family=Pixelify+Sans:wght@700&display=swap');
+        </style>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <div className="App">
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/signin" element={<SignIn id="signin" />} />
+                <Route path="/homepage" element={<HomePage />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/addDog" element={<DogInputPage />} />
+              </Routes>
+            </div>
+          </Router>
+        </ThemeProvider>
+      </LocalizationProvider>
+    </>
+=======
     <AuthProvider>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ThemeProvider theme={theme}>
@@ -55,6 +105,7 @@ function App() {
       </ThemeProvider>
     </LocalizationProvider>
     </AuthProvider>
+>>>>>>> dev
   );
 }
 

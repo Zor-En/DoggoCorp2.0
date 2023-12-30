@@ -9,6 +9,9 @@ import Button from "@mui/material/Button";
 import SnackbarAlert from "./components/SnackbarAlert";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useNavigate } from "react-router";
+import Sky from "./components/Sky";
+import HeaderDog from "./components/HeaderDog";
+import Footers from "./components/Footer";
 import { useAuth } from './components/Authorization';
 
 
@@ -19,12 +22,11 @@ export default function SignIn() {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  
   const { getUser } = useAuth();
   const { updateUser } = useAuth();
-
-
+  const navigate = useNavigate();
   // close snakbar alert if clicked off screen
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -33,26 +35,43 @@ export default function SignIn() {
     setSnackbarOpen(false);
   };
 
-  // if users click dign up redirect to sign up screen
   const handleSignInClick = () => {
     navigate("/signup");
   };
 
-  // sends user token to server for verification
-  const sendTokenToServer = async (token) => {
-    try {
-      const response = await fetch("http://localhost:3000/verify-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token }),
-      });
+  // // sends user token to server for verification
+  // const sendTokenToServer = async (token) => {
+  //   try {
+  //     const response = await fetch("http://localhost:3000/verify-token", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ token }),
+  //     });
 
-      setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     setLoading(true);
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const data = await response.json();
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       console.log("Token verified successfully");
+  //       // show snackbar message
+  //       navigate("/homepage");
+  //     } else {
+  //       // turn off loading bar
+  //       setLoading(false);
+  //       console.error("Token verification failed:", data.error);
+  //     }
+  //   } catch (error) {
+  //     // show snackbar message that log in failed
+  //     setSnackbarMessage("Login failed!");
+  //     setSnackbarSeverity("error");
+  //     setSnackbarOpen(true);
+  //     console.error("Error during token verification:", error);
+  //   }
+  // };
 
       if (response.ok) {
         console.log("Token verified successfully");
@@ -96,6 +115,7 @@ export default function SignIn() {
   };
 
   // if users enter log in info without oauth
+>>>>>>> dev
   const handleSignIn = async () => {
     try {
       // initiate loading bar
@@ -104,18 +124,16 @@ export default function SignIn() {
       // fake loading time
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const googleIdToken = response.credential;
-
-      // Send the token to the server for verification
-      await sendTokenToServer(googleIdToken);
-
+      if (!response.ok) {
+        throw new Error("Login failed!");
+      }
       // if successful
       setSnackbarMessage("Login successful!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       navigate("/homepage");
     } catch (error) {
-      // if error
+      //if error
       setSnackbarMessage("Login failed!");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
@@ -125,14 +143,12 @@ export default function SignIn() {
     }
   };
 
-  const handleCallbackResponse = (response) => {
-    console.log("Encoded JWT ID token:" + response.credential);
-    const googleIdToken = response.credential;
 
-    sendTokenToServer(googleIdToken);
-  };
 
   const google = window.google;
+  const handleCallbackResponse = (response) => {
+    console.log("Encoded JWT ID token:" + response.credential);
+  };
   useEffect(() => {
     google.accounts.id.initialize({
       client_id:
@@ -148,6 +164,8 @@ export default function SignIn() {
 
   return (
     <div className="login">
+      <Sky />
+      <Footers />
       <Box
         sx={{
           display: "flex",
