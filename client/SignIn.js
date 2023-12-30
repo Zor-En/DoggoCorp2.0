@@ -9,7 +9,8 @@ import Button from "@mui/material/Button";
 import SnackbarAlert from "./components/SnackbarAlert";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useNavigate } from "react-router";
-import { useGoogleLogin, GoogleLogin } from "react-google-login";
+import { useAuth } from './components/Authorization';
+
 
 export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -20,6 +21,9 @@ export default function SignIn() {
 
   const navigate = useNavigate();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const { getUser } = useAuth();
+  const { updateUser } = useAuth();
+
 
   // close snakbar alert if clicked off screen
   const handleSnackbarClose = (event, reason) => {
@@ -52,10 +56,22 @@ export default function SignIn() {
 
       if (response.ok) {
         console.log("Token verified successfully");
-        console.log("User Email:", data.email);
-        console.log("User ID:", data.googleUserId);
-        const userId = getUserId(data.googleUserId)
-        navigate(`/homepage/${userId}`);
+        console.log("User ID:", data.googleId);
+        const user = await verifyUserId(data.googleId);
+
+        const userInfo = {
+          firstname: user.firstname,
+          lastname: user.lastname,
+          username: user.username,
+          phoneNumber: user.phoneNumber,
+          googleId: data.googleId,
+          email: data.email,
+          watcher: user.isWatcher,
+        }
+
+        updateUser(userInfo);
+
+        navigate(`/homepage`);
       } else {
         // turn off loading bar
         setLoading(false);
@@ -70,20 +86,14 @@ export default function SignIn() {
     }
   };
 
-  const getUserId = async (googleId) => {
+  const verifyUserId = async (googleId) => {
     try {
-      const response = await fetch(`http://localhost:3000/signin/${googleId}`)
-      const data = await response.json();
-      return data;
-    } catch (error){
-      if (error === 'User not found') {
-        console.error("User verification failed:", error);
-        navigate('/signup')
-      } else {
-        console.error("Error during user verification:", error);
-      }
+      const user = await getUser(googleId); 
+      return user;
+    } catch (error) {
+      console.error('Error fetching user:', error);
     }
-  }
+  };
 
   // if users enter log in info without oauth
   const handleSignIn = async () => {
@@ -206,7 +216,6 @@ export default function SignIn() {
             </Typography>
           </Box>
         </Card>
-
         <div id="sign-in-div"></div>
       </Box>
     </div>
