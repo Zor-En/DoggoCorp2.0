@@ -1,16 +1,18 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 import SignIn from "./SignIn";
 import HomePage from "./Homepage";
 import SignUp from "./SignUp";
 import LandingPage from "./LandingPage";
 import DogInputPage from "./Doggo";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { purple } from "@mui/material/colors";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";import { useEffect } from 'react';
-
-
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AuthProvider } from "./components/Authorization";
 
 
   //cursor html
@@ -61,8 +63,8 @@ const theme = createTheme({
 });
 
 function App() {
-
   return (
+<<<<<<< HEAD
   <>
     <style dangerouslySetInnerHTML={{__html: `body { cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur113.cur'), auto;}`,}}/>  
     <style>
@@ -85,6 +87,25 @@ function App() {
         </ThemeProvider>
       </LocalizationProvider>
     </>
+=======
+    <AuthProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <div className="App">
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/signin" element={<SignIn id="signin" />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/homepage" element={<HomePage />} />
+              <Route path="/addDog" element={<DogInputPage />} />
+            </Routes>
+          </div>
+        </Router>
+      </ThemeProvider>
+    </LocalizationProvider>
+    </AuthProvider>
+>>>>>>> dev
   );
 }
 
