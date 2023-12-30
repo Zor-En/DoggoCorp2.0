@@ -1,32 +1,72 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const cors = require('cors');
+// const cors = require('cors');
 
 const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
+const { Pool } = require('pg');
+
+
 const cookieController = require("./controllers/cookieController");
 const userController = require("./controllers/userController");
-const dogController = require("./controllers/dogController")
+// const dogController = require("./controllers/dogController")
 const sessionController = require("./controllers/sessionController")
-const { Pool } = require('pg');
+
+
+
+app.use((req, res, next) => {
+  // Set the Referrer-Policy header to no-referrer-when-downgrade
+  res.setHeader('Referrer-Policy', 'no-referrer-when-downgrade');
+  next();
+});
+
+app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
+
+  // Google OAuth
+const client = new OAuth2Client("654380610871-b70h1a8224333s0jgls1fvhsrmq3r0p4.apps.googleusercontent.com");
+app.post('/verify-token', async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ error: 'Token is missing in the request body' });
+  }
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: "654380610871-b70h1a8224333s0jgls1fvhsrmq3r0p4.apps.googleusercontent.com",
+    });
+
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+
+    res.status(200).json({ success: true, message: 'Token verified successfully' });
+  } catch (error) {
+    console.error("Verification error:", error);
+    res.status(401).json({ error: 'Token verification failed' });
+  }
+});
 
 
 const PORT = process.env.PORT || 3000;
 
 //sean test
-const pool = new Pool({
-  user: 'jqjdmzsq',
-  host: 'mahmud.db.elephantsql.com',
-  database: 'jqjdmzsq',
-  password: '5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q',
-  port: 5432,
-})
-app.use(userController.createUserTable, dogController.createDogTable);
+// const pool = new Pool({
+//   user: 'jqjdmzsq',
+//   host: 'mahmud.db.elephantsql.com',
+//   database: 'jqjdmzsq',
+//   password: '5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q',
+//   port: 5432,
+// })
+// app.use(userController.createUserTable, dogController.createDogTable);
 
 
-app.use(express.json());
 
-app.use(cors());
+// app.use(cors());
 app.use(cookieParser());
 
 //handle static files from our bundler
@@ -34,7 +74,6 @@ app.use(express.static(path.resolve(__dirname, 'build')));
 
 //direct to bundled HTML file on root
 app.get('/*', (req, res) => {
-
     console.log('Received request for:', req.url)
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
   });
@@ -45,57 +84,53 @@ app.get('/*', (req, res) => {
 // app.post('/addDog', dogController.createDogTable, async (req, res) => {
 //   res.status(200).send('dog created!')
 // })
-=======
-  console.log('Received request for:', req.url);
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-});
 
 //routers
-app.post(
-  '/signup',
-  userController.addUser,
-  sessionController.startSession,
-  cookieController.setSSIDCookie,
-  (req, res) => {
-    if (res.locals.session) {
-      console.log('Signed up successfully!');
-      return res.redirect('/homepage');
-    }
-  }
-);
+// app.post(
+//   '/signup',
+//   userController.addUser,
+//   sessionController.startSession,
+//   cookieController.setSSIDCookie,
+//   (req, res) => {
+//     if (res.locals.session) {
+//       console.log('Signed up successfully!');
+//       return res.redirect('/homepage');
+//     }
+//   }
+// );
 
-app.use(
-  '/login',
-  userController.verifyUser,
-  sessionController.startSession,
-  cookieController.setSSIDCookie,
-  (req, res) => {
-    if (res.locals.session) {
-      console.log('Logged in successfully!');
-      return res.redirect('/homepage');
-    }
-  }
-);
+// app.use(
+//   '/login',
+//   userController.verifyUser,
+//   sessionController.startSession,
+//   cookieController.setSSIDCookie,
+//   (req, res) => {
+//     if (res.locals.session) {
+//       console.log('Logged in successfully!');
+//       return res.redirect('/homepage');
+//     }
+//   }
+// );
 
-app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
-  res.status(200).json(res.locals.dogs);
-});
+// app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
+//   res.status(200).json(res.locals.dogs);
+// });
 
-app.post('/addDog', dogController.addDog, (req, res) => {
-  res.status(200).json(res.locals.newDog);
-});
+// app.post('/addDog', dogController.addDog, (req, res) => {
+//   res.status(200).json(res.locals.newDog);
+// });
 
-app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
-  // if (res.locals.session) {
-  console.log('Going to homepage');
-  return res.redirect('/homepage');
-  // }
-});
+// app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
+//   // if (res.locals.session) {
+//   console.log('Going to homepage');
+//   return res.redirect('/homepage');
+//   // }
+// });
 
 //to query dogs
-app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
-  res.status(200).json(res.locals.dogs);
-});
+// app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
+//   res.status(200).json(res.locals.dogs);
+// });
 
 // //to submit to addDogs
 // app.post('/addDog', dogController.createDogTable, (req, res) => {
@@ -107,10 +142,10 @@ app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
 // });
 
 //route to add dogs page
-app.get('/addDog', (req, res) => {
-  console.log('going to add dog page');
-  return res.redirect('/homepage');
-});
+// app.get('/addDog', (req, res) => {
+//   console.log('going to add dog page');
+//   return res.redirect('/homepage');
+// });
 
 app.get((req, res) => {
   console.log('going to add dog page');
