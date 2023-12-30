@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useParams } from "react-router-dom";
 import SignIn from "./SignIn";
 import HomePage from "./Homepage";
 import SignUp from "./SignUp";
@@ -8,7 +8,8 @@ import DogInputPage from "./Doggo";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { purple } from "@mui/material/colors";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";import { useEffect } from 'react';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useEffect } from 'react';
 
 
 
@@ -35,7 +36,6 @@ const theme = createTheme({
 });
 
 function App() {
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ThemeProvider theme={theme}>

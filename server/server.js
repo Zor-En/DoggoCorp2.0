@@ -47,10 +47,9 @@ app.post('/verify-token', async (req, res) => {
 
     const payload = ticket.getPayload();
     const userid = payload['sub'];
+    const userEmail = payload['email'];
 
-    res
-      .status(200)
-      .json({ success: true, message: 'Token verified successfully' });
+    res.status(200).json({ success: true, message: 'Token verified successfully',  email: userEmail, googleUserId: userid});
   } catch (error) {
     console.error('Verification error:', error);
     res.status(401).json({ error: 'Token verification failed' });

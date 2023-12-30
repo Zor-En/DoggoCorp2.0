@@ -52,8 +52,10 @@ export default function SignIn() {
 
       if (response.ok) {
         console.log("Token verified successfully");
-        // show snackbar message
-        navigate("/homepage");
+        console.log("User Email:", data.email);
+        console.log("User ID:", data.googleUserId);
+        const userId = getUserId(data.googleUserId)
+        navigate(`/homepage/${userId}`);
       } else {
         // turn off loading bar
         setLoading(false);
@@ -67,6 +69,21 @@ export default function SignIn() {
       console.error("Error during token verification:", error);
     }
   };
+
+  const getUserId = async (googleId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/signin/${googleId}`)
+      const data = await response.json();
+      return data;
+    } catch (error){
+      if (error === 'User not found') {
+        console.error("User verification failed:", error);
+        navigate('/signup')
+      } else {
+        console.error("Error during user verification:", error);
+      }
+    }
+  }
 
   // if users enter log in info without oauth
   const handleSignIn = async () => {
