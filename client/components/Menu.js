@@ -20,6 +20,12 @@ export default function Menu() {
     navigate('/')
   }
 
+  const handleMenuClick = (text) => {
+    if (text === 'Add Dog'){
+      navigate('/addDog')
+    }
+  }
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -37,9 +43,9 @@ export default function Menu() {
     >
       <List>
         {['Profile', 'Add Dog',].map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem key={text} disablePadding  onClick= {() => handleMenuClick(text)}>
             <ListItemButton>
-              <ListItemText primary={text} />
+              <ListItemText primary={text}/>
             </ListItemButton>
           </ListItem>
         ))}

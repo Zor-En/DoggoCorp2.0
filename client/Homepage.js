@@ -5,7 +5,6 @@ import Menu from "./components/Menu";
 
 const HomePage = () => {
   const [value, setValue] = useState("");
-
   return (
     <Box sx={{ minWidth: "100vw" }}>
       {/* Header */}
