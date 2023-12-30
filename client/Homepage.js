@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import MainCard from "./components/MainCard";
 import Menu from "./components/Menu";
+import { useAuth } from './components/Authorization';
 
 const HomePage = () => {
   const [value, setValue] = useState("");
+  const { user } = useAuth();
+  console.log('Homepage User:', user);
   return (
     <Box sx={{ minWidth: "100vw" }}>
       {/* Header */}

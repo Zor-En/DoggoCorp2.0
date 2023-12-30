@@ -66,14 +66,6 @@ app.post('/verify-token', async (req, res) => {
 // })
 // app.use(userController.createUserTable, dogController.createDogTable);
 
-//handle static files from our bundler
-app.use(express.static(path.resolve(__dirname, 'build')));
-
-//direct to bundled HTML file on root
-app.get('/', (req, res) => {
-  console.log('Received request for:', req.url);
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-});
 
 //logic for adding a new dog **INCOMPLETE**
 // app.post('/addDog', dogController.createDogTable, async (req, res) => {
@@ -120,6 +112,11 @@ app.get(
   }
 );
 
+app.get('/signin/:googleId', userController.verifyUser, (req,res) => {
+  console.log('User Verified. User Id:', req.locals.user)
+  res.status(200).json(res.locals.user)
+})
+
 // app.post('/addDog', dogController.addDog, (req, res) => {
 //   res.status(200).json(res.locals.newDog);
 // });
@@ -155,6 +152,16 @@ app.get(
 //   console.log('going to add dog page');
 //   return res.redirect('/homepage');
 // });
+
+//handle static files from our bundler
+app.use(express.static(path.resolve(__dirname, 'build')));
+
+//direct to bundled HTML file
+app.get('*', (req, res) => {
+  console.log('Received request for:', req.url);
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+});
+
 
 // catch 404 errors
 app.use('*', (req, res) =>
