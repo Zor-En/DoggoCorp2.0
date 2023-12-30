@@ -44,7 +44,7 @@ function App() {
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/signin" element={<SignIn id="signin" />} />
-              <Route path="/homepage" element={<HomePage />} />
+              <Route path="/homepage/:userId" element={<HomePage />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/addDog" element={<DogInputPage />} />
             </Routes>

@@ -4,7 +4,7 @@ import './stylesheets/LandingPage.css'
 import { CssBaseline } from "@mui/material";
 import setupPixiBackground from "./components/SpriteAnimator";
 // import PixiContainer from "./components/PixieContainer";
-import backgroundImage from '../assets/0iQTf0.png';
+// import backgroundImage from '../assets/0iQTf0.png';
 
 
 
@@ -22,14 +22,12 @@ const LandingPage = () => {
   return (
     <div className="landing-page" style={{  }}>
       {/* <setupPixiBackground /> */}
-      <CssBaseline /> 
+      <CssBaseline />
       <Header />
       {/* <PixiContainer /> */}
     </div>
   );
 };
 
-  
+
   export default LandingPage;
-
-
