@@ -58,15 +58,15 @@ export default function SignIn() {
 
       if (response.ok) {
         console.log("Token verified successfully");
-        console.log("User ID:", data.googleId);
-        const user = await verifyUserId(data.googleId);
+        console.log("User ID:", data.googleUserId);
+        const user = await verifyUserId(data.googleUserId);
 
         const userInfo = {
           firstname: user.firstname,
           lastname: user.lastname,
           username: user.username,
           phoneNumber: user.phoneNumber,
-          googleId: data.googleId,
+          googleId: data.googleUserId,
           email: data.email,
           watcher: user.isWatcher,
         }
