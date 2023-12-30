@@ -4,7 +4,6 @@ const path = require('path');
 const cors = require('cors');
 const { OAuth2Client } = require('google-auth-library');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 
 const cookieController = require('./controllers/cookieController');
@@ -20,7 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());

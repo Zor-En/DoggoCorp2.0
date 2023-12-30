@@ -11,7 +11,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from "react-router";
 import { useAuth } from './components/Authorization';
 import PhoneNumberField from "./components/PhoneNumField";
-import { response } from "express";
 
 export default function SignUp() {
   const [rememberMe, setRememberMe] = useState(false);
