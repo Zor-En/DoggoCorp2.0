@@ -3,6 +3,16 @@ const pgp = require('pg-promise')();
 const connectionString = 'postgres://jqjdmzsq:5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q@mahmud.db.elephantsql.com/jqjdmzsq'
 const db = pgp(connectionString);
 
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  user: 'jqjdmzsq',
+  host: 'mahmud.db.elephantsql.com',
+  database: 'jqjdmzsq',
+  password: '5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q',
+  port: 5432,
+});
+
 const userController = {};
 
 // userController.createUserTable = async (req, res, next) => {
@@ -30,11 +40,26 @@ const userController = {};
 // },
 
 
-userController.addUser = (req, res, next) => {
+// INSERT INTO users (google_id, email, first_name, last_name, phone_number, is_owner)
+
+userController.addUser = async (req, res, next) => {
     console.log('addUser request body', req.body);
-    const { username, password, role } = req.body;
-    //check validity
-    //db.add(user)
+    const { firstname, lastname, username, password, phoneNumber, googleId, email, watcher } = req.body;
+    try {
+        const result = await pool.query(
+          'INSERT INTO users (google_id, email, first_name, last_name, phone_number, is_owner) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+          [googleId, email, firstname, lastname, phoneNumber, watcher]
+        );
+        console.log("result at userController.addUsers: ", result.rows[0])
+        // Send the inserted dog data back to the client if needed
+        res.locals.currentUsers = result.rows[0];
+        next();
+      } catch (error) {
+          return next({
+            log: `Error happened at middleware userController.addUsers ${error}`,
+            message: { error: 'User database profile creation error' }}
+          );
+      }
     return next();
 }
 
@@ -47,14 +72,17 @@ userController.addUser = (req, res, next) => {
 // }
 
 userController.verifyUser = async (req, res, next) => {
+    console.log("starting verifyUser");
+    console.log(req.params)
     const { googleId } = req.params; 
     console.log('Received Google ID:', googleId);
     try {
         // find the user based on the Google ID
-        const user = await db.oneOrNone('SELECT * FROM users WHERE google_id = $1', [googleId]);
+        const user = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
+        console.log('Query Result:', user.rows);
 
-        if (user) {
-            req.locals.user = user; 
+        if (user.rows.length > 0) {
+            req.locals.user = user.rows[0]
             next();
         } else {
             // User not found, send an error response

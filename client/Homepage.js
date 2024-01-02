@@ -59,10 +59,13 @@ const theme = createTheme({
 });
 
 
+
 const HomePage = () => {
   const [value, setValue] = useState("");
   const { user } = useAuth();
   console.log('Homepage User:', user);
+
+  
   return (
     <div>
       <Sky />

@@ -99,8 +99,8 @@ app.post('/verify-token', async (req, res) => {
 // );
 
 app.get(
-  '/fetchDogs',
-  // () => {console.log('starting fetch'), next()},
+  '/fetchDogs/',
+  // () => {console.log('starting fetch'); return next()},
   dogController.fetchDogs,
   (req, res) => {
     console.log('dogs fetched');
@@ -108,12 +108,14 @@ app.get(
   }
 );
 
+app.use('/signin/:googleId', userController.verifyUser);
+
 app.get('/signin/:googleId', userController.verifyUser, (req,res) => {
-  console.log('User Verified. User Id:', req.locals.user)
+  console.log('User Verified. User Id:', res.locals.user)
   res.status(200).json(res.locals.user)
 })
 
-app.post('/adddog', dogController.addDog, (req, res) => {
+app.post('/addDog', dogController.addDog, (req, res) => {
   res.status(200).json(res.locals.currentDog);
 });
 
