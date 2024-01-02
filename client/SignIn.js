@@ -12,6 +12,7 @@ import Sky from "./components/Sky";
 import Footers from "./components/Footer";
 import { useNavigate } from "react-router";
 import { useAuth } from './components/Authorization';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 
 export default function SignIn() {
@@ -26,6 +27,14 @@ export default function SignIn() {
   const { getUser } = useAuth();
   const { updateUser } = useAuth();
 
+  const headerFont = createTheme({  //this shit is not working
+    typography: {
+      fontFamily: [
+        'Pixelify Sans',
+        'sans-serif',
+      ].join(','),
+    },
+  });
 
   // close snakbar alert if clicked off screen
   const handleSnackbarClose = (event, reason) => {
@@ -150,6 +159,7 @@ export default function SignIn() {
 
   return (
     <div className="login">
+      <ThemeProvider theme={headerFont}>
       <Sky />
       <Footers />
       <Box
@@ -163,7 +173,16 @@ export default function SignIn() {
       >
         <Card sx={{ maxWidth: 400, width: "100%", p: 3 }}>
           <Box textAlign="center" mb={2}>
-            <Typography variant="h4" fontWeight="medium">
+            <Typography
+              variant="h3"
+              fontWeight="medium"
+              fontFamily="Pixelify Sans"
+              sx={{
+                color: "pink",
+                textShadow:
+                  "-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e",
+              }}
+            >
               Sign in
             </Typography>
           </Box>
@@ -222,6 +241,7 @@ export default function SignIn() {
         </Card>
         <div id="sign-in-div"></div>
       </Box>
+      </ThemeProvider>
     </div>
   );
 }

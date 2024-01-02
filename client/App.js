@@ -22,7 +22,7 @@ import './stylesheets/App.css';
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Oswald',
+    fontFamily: 'Roboto',
   },
   palette: {
     primary: {
@@ -68,11 +68,6 @@ const theme = createTheme({
 function App() {
   return (
   <>
-    {/* <style dangerouslySetInnerHTML={{__html: `body { cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur113.cur'), auto;}`,}}/>
-    <style>
-          @import
-          url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&family=Pixelify+Sans:wght@700&display=swap');
-        </style> */}
     <AuthProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>

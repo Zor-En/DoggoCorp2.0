@@ -67,8 +67,14 @@ const HomePage = () => {
     <div>
       <Sky />
       <HeaderDog />
-      <Box sx={{ minWidth: "100vw" }}>
-       
+      {/* <Box sx={{ minWidth: "100vw" }}> */}
+       <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="100vh" // Full screen height
+          // sx={{ backgroundColor: 'pink' }}
+        >
         {/* Centered Container */}
         <Grid
           container

@@ -71,7 +71,7 @@ app.post('/verify-token', async (req, res) => {
 //   res.status(200).send('dog created!')
 // })
 
-//routers
+// routers
 // app.post(
 //   '/signup',
 //   userController.addUser,
@@ -138,16 +138,16 @@ app.post('/adddog', dogController.addDog, (req, res) => {
 //   res.status(200).json(res.locals.newDog);
 // });
 
-//route to add dogs page
+// route to add dogs page
 // app.get('/addDog', (req, res) => {
 //   console.log('going to add dog page');
 //   return res.redirect('/homepage');
 // });
 
-// app.get((req, res) => {
-//   console.log('going to add dog page');
-//   return res.redirect('/homepage');
-// });
+app.get((req, res) => {
+  console.log('going to add dog page');
+  return res.redirect('/homepage');
+});
 
 //handle static files from our bundler
 app.use(express.static(path.resolve(__dirname, 'build')));

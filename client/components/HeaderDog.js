@@ -19,6 +19,8 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { blue } from "@mui/material/colors";
+import { useNavigate } from "react-router";
+
 
 const theme = createTheme({
   transitions: {
@@ -74,11 +76,28 @@ export default function HeaderDog() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const navigate = useNavigate();
+  const [state, setState] = React.useState({
+    left: false,
+  });
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const handleSignOut = () => {
+    if (text === "Logout") {
+    navigate("/");
+    }
+  };
 
+ const handleMenuClick = (text) => {
+   if (text === "Add Dog") {
+     navigate("/addDog");
+   }
+   if (text === "Profile") {
+     navigate("/homepage");
+   }
+ };
 
 const shadowColor = blue[50];
 const renderMenu = (
@@ -130,9 +149,11 @@ const renderMenu = (
         color="pink"
         style={{ backgroundColor: "transparent" }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={() => handleMenuClick("Profile")}>
+          My account
+        </MenuItem>
+        <MenuItem onClick={() => handleMenuClick("Add Dog")}>Add Dog</MenuItem>
+        <MenuItem onClick={() => handleMenuClick("Logout")}>Logout</MenuItem>
       </Menu>
     </ThemeProvider>
   </div>

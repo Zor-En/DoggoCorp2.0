@@ -1,6 +1,10 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import { Toolbar } from '@mui/material';
+import {
+  Box,
+  Button,
+  Toolbar,
+} from "@mui/material";
 import CustomizedBreadcrumbs from './Breadcrumbs';
 import '../stylesheets/App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -18,25 +22,33 @@ const Header = () => {
   return (
     <div>
       <ThemeProvider theme={headerFont}>
-        <Typography
-          gutterBottom
-          variant='h2'
-          textAlign='center'
-          // fontFamily={'Pixelify Sans'}
+        <Box
+          minHeight="80vh"
           sx={{
-            color: 'pink',
-            //   textShadow:
-            //     "-1px -1px white, 1px 1px hotpink, 3px 3px hotpink, 4px 4px 4px #9e9e9e",
-            // }}
-            textShadow:
-              '-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 3,
           }}
         >
-          O hai frens! Welcome to My Homepage
-        </Typography>
+          <Typography
+            gutterBottom
+            variant="h2"
+            textAlign="center"
+            sx={{
+              color: "pink",
+              textShadow:
+                "-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e",
+            }}
+          >
+            O hai frens!
+            <br></br>
+            Welcome to Doggo Corp
+          </Typography>
+          <CustomizedBreadcrumbs />
+        </Box>
       </ThemeProvider>
-
-      <CustomizedBreadcrumbs />
     </div>
   );
 };
