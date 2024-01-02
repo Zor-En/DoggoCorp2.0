@@ -26,6 +26,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { useNavigate } from "react-router";
 //for custom file upload button
 // import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 // import { styled } from "@mui/material/styles";
@@ -45,6 +46,8 @@ const DogInputPage = () => {
     miscellaneous: [],
     photo: null,
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     if (e.target.name.startsWith("meal-")) {
@@ -158,7 +161,7 @@ const DogInputPage = () => {
     console.log(dogData);
     // Submit logic here
     try {
-      const response = await fetch('/adddog', {
+      const response = await fetch('/addDog', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -169,9 +172,11 @@ const DogInputPage = () => {
       // Check if the request was successful
       if (response.ok) {
         console.log('Dog added successfully!');
+        navigate('/homepage')
         // Optionally, reset the form or perform other actions
       } else {
         console.error('Error adding dog:', response.statusText);
+        navigate('/homepage')
         // Handle errors or display error messages to the user
       }
     } catch (error) {

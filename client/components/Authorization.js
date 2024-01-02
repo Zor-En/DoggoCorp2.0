@@ -11,14 +11,9 @@ export const AuthProvider = ({ children }) => {
       const response = await fetch(`http://localhost:3000/signin/${googleId}`);
       const data = await response.json();
       console.log("Response from getUser:", data);
-      const user = data.user;
-      console.log('Use data from getUser:', user)
-  
-      if (!user) {
-        console.error("User not found:", data)
+      if (response.ok){
+        return data
       }
-  
-      return user;
     } catch (error) {
       console.error("Error during user verification:", error);
       throw error; 

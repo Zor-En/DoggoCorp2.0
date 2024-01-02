@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
 import  Header  from "./components/Header";
+import './stylesheets/App.css';
 import './stylesheets/LandingPage.css'
 import { CssBaseline } from "@mui/material";
 // import setupPixiBackground from "./components/SpriteAnimator";

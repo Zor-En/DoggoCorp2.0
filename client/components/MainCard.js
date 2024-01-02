@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -33,23 +33,53 @@ import "../stylesheets/LandingPage.css";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import eboshi from "../../assets/eboshi.jpg";
+import { useAuth } from "./Authorization";
 
-  const headerFont = createTheme({
-    //this shit is not working
-    typography: {
-      fontFamily: ["Pixelify Sans", "sans-serif"].join(","),
+const headerFont = createTheme({
+  //this shit is not working
+  typography: {
+    fontFamily: ["Pixelify Sans", "sans-serif"].join(","),
+  },
+  palette: {
+    primary: {
+      main: "#6a994e",
     },
-    palette: {
-      primary: {
-        main: "#6a994e",
-      },
-      secondary: {
-        main: "#9c6644",
-      },
+    secondary: {
+      main: "#9c6644",
     },
-  });
+  },
+});
 
 export default function MainCard() {
+  const [dogsArr, setDogsArr] = useState([]);
+  let { user } = useAuth();
+  // user = 6; //temporary hard coding
+  // console.log('MainCard User:', user.googleId);
+  const getDogs = async () => {
+    try {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'Application/JSON',
+        },
+        // body: JSON.stringify({ userId: user.googleId }), 
+      };
+      console.log('getting dogs from database associated with userID: ', user );
+      const response = await fetch('http://localhost:3000/fetchDogs/', requestOptions);
+      const data = await response.json();
+      if (!response.ok) console.log('ERROR, not 200');
+      console.log('dogs', data.rows);
+      setDogsArr(data.rows);
+      // console.log('all dogs', dogsArr);
+    } catch (error) {
+      console.log(error, 'error accessing database');
+    }
+  };
+  useEffect(() => {
+    console.log('useEffect is working');
+    getDogs();
+  }, []);
+
   const boxBorder = blue[50];
   const cardStyle = {
     minWidth: 455,
@@ -85,6 +115,7 @@ export default function MainCard() {
             title="Eboshi"
             titleTypographyProps={{ variant: "h3" }}
             sx={{
+              mb: 1,
               color: "pink",
               textShadow:
                 "-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e",
@@ -95,68 +126,37 @@ export default function MainCard() {
             height="250"
             image={eboshi}
             alt="Pixelized picture of dog -?"
-            sx={{ objectFit: "contain" }}
+            sx={{ objectFit: "contain", mb: 1 }}
           />
           <CardContent sx={{ textAlign: "center" }}>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body" color="text.secondary" sx={{ mb: 2 }}>
               Basic Dog Info
             </Typography>
-            <Button variant="outlined">Edit</Button>
+            <br></br>
+            <Button variant="outlined" sx={{ mt: 2 }}>
+              Edit
+            </Button>
           </CardContent>
-          <CardActions sx={{ justifyContent: "center" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                mb: 1,
-              }}
-            >
+          <CardActions
+            sx={{
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
               Add / Remove Watcher
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <IconButton aria-label="add">
+                <AddCircleIcon color="primary" />
+              </IconButton>
+              <IconButton aria-label="remove">
+                <RemoveCircleIcon color="primary" />
+              </IconButton>
             </Box>
-            <IconButton aria-label="Unsure">
-              <AddCircleIcon color="primary" />
-            </IconButton>
-            <IconButton aria-label="share">
-              <RemoveCircleIcon color="primary" />
-            </IconButton>
           </CardActions>
         </Card>
-        {/* <Card sx={cardStyle} variant="outlined" raised={true}>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="Dog Init">
-              J
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title="Dog Name"
-          subheader="Date added - ?"
-        />
-        <CardMedia
-          component="img"
-          height="194"
-          image=""
-          alt="Pixelized picture of dog -?"
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            Basic Dog Info
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="Unsure">
-            <SportsMartialArtsIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <SportsBasketballIcon />
-          </IconButton>
-        </CardActions>
-      </Card> */}
       </ThemeProvider>
     </div>
   );

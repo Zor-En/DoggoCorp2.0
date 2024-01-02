@@ -76,29 +76,33 @@ dogController.addDog = async (req, res, next) => {
 // }
 
 dogController.fetchDogs = async (req, res, next) => {
-  console.log('fetchDogs request body', req.body);
+  console.log('fetchDogs started');
     // const userId = req.body.ssid;
     // const role = req.body.role;
-  const dogs = [];
+  // const dogs = [];
   //query text
   try {
-    if (role === 'owner') {
-      const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
+    // if (role === 'owner') {
+
+    // const user = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
+      //jarod's info hardcoded for presentation 
+      const response = await pool.query(`SELECT u.first_name as Owner,d.* FROM dogs d join users u ON d.owner_id = u.user_id
+        where d.owner_id = 6;`);
       //query for owner's dogs
       //Dogs.find()
       console.log('returning results', response);
-    } else {
+    // } else {
       //query for sitter's dogs
-      const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
-      console.log('fetching dogs for sitter', response);
-    }
-  if (dogs.length === 0) {
+      // const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
+      // console.log('fetching dogs for sitter', response);
+    // }
+  if (response.length === 0) {
     //error handling
     return next();
   } else {
-    res.locals.dogs = dogs;
+      res.locals.dogs = response;
 
-    return next();
+      return next();
   }
  } catch (error) {
   console.error('Error fetching dogs:', response.status)

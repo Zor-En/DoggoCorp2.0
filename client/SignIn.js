@@ -68,17 +68,12 @@ export default function SignIn() {
       if (response.ok) {
         console.log("Token verified successfully");
         console.log("User ID:", data.googleUserId);
-        const user = await verifyUserId(data.googleUserId);
-        await verifyUserId(data.googleUserId);
+        const user = await getUser(data.googleUserId);
+        // await getUser(data.googleUserId);
 
         const userInfo = {
-          firstname: user.firstname,
-          lastname: user.lastname,
-          username: user.username,
-          phoneNumber: user.phoneNumber,
           googleId: data.googleUserId,
           email: data.email,
-          watcher: user.isWatcher,
         }
 
         updateUser(userInfo);
@@ -98,14 +93,14 @@ export default function SignIn() {
     }
   };
 
-  const verifyUserId = async (googleId) => {
-    try {
-      const user = await getUser(googleId); 
-      return user;
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  };
+  // const verifyUserId = async (googleId) => {
+  //   try {
+  //     const user = await getUser(googleId); 
+  //     return user;
+  //   } catch (error) {
+  //     console.error('Error fetching user:', error);
+  //   }
+  // };
 
   // if users enter log in info without oauth
   const handleSignIn = async () => {

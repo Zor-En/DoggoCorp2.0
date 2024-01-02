@@ -8,6 +8,8 @@ CREATE TABLE users (
     is_owner BOOLEAN NOT NULL
 );
 
+DROP TABLE transactions
+DROP TABLE DOGS 
 CREATE TABLE dogs (
     dog_id SERIAL PRIMARY KEY,
     dog_name VARCHAR(255) NOT NULL,

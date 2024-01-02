@@ -3,6 +3,16 @@ const pgp = require('pg-promise')();
 const connectionString = 'postgres://jqjdmzsq:5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q@mahmud.db.elephantsql.com/jqjdmzsq'
 const db = pgp(connectionString);
 
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  user: 'jqjdmzsq',
+  host: 'mahmud.db.elephantsql.com',
+  database: 'jqjdmzsq',
+  password: '5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q',
+  port: 5432,
+});
+
 const userController = {};
 
 // userController.createUserTable = async (req, res, next) => {
@@ -62,15 +72,17 @@ userController.addUser = async (req, res, next) => {
 // }
 
 userController.verifyUser = async (req, res, next) => {
+    console.log("starting verifyUser");
     console.log(req.params)
     const { googleId } = req.params; 
     console.log('Received Google ID:', googleId);
     try {
         // find the user based on the Google ID
-        const user = await db.findOne('SELECT * FROM users WHERE google_id = $1', [googleId]);
+        const user = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
+        console.log('Query Result:', user.rows);
 
-        if (user) {
-            req.locals.user = user; 
+        if (user.rows.length > 0) {
+            req.locals.user = user.rows[0]
             next();
         } else {
             // User not found, send an error response
