@@ -30,24 +30,23 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 export default function CustomizedBreadcrumbs() {
   const navigate = useNavigate();
 
-  const handleClick = (event, path) => {
-    event.preventDefault();
+  const handleClick = (path) => {
     navigate(path);
 };
 
   return (
-    <div role="presentation">
+    <div role="presentation" onClick={handleClick}>
       <Breadcrumbs aria-label="breadcrumb">
         <StyledBreadcrumb
           component="a"
           label="Log in"
           icon={<HomeIcon fontSize="small" />}
-          onClick={(event) => handleClick(event, "/signin")}
+          onClick={() => handleClick("/signin")}
         />
         <StyledBreadcrumb
           component="a"
           label="Sign up"
-          onClick={(event) => handleClick(event, "/signup")}
+          onClick={() => handleClick("/signup")}
         />
         <StyledBreadcrumb label="Team" />
       </Breadcrumbs>

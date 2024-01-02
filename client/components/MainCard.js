@@ -19,7 +19,6 @@ export default function MainCard() {
     margin: "8px",
   };
 
-  // makes two columns for two cards per row
   const containerStyle = {
     display: "flex",
     flexWrap: "wrap",

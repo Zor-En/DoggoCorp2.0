@@ -8,10 +8,11 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SnackbarAlert from "./components/SnackbarAlert";
 import LinearProgress from "@mui/material/LinearProgress";
-import Sky from "./components/Sky";
-import Footers from "./components/Footer";
 import { useNavigate } from "react-router";
-import { useAuth } from './components/Authorization';
+import { useGoogleLogin, GoogleLogin } from "react-google-login";
+import Sky from "./components/Sky";
+import HeaderDog from "./components/HeaderDog";
+import Footers from "./components/Footer";
 
 
 export default function SignIn() {
@@ -21,13 +22,10 @@ export default function SignIn() {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-  const { getUser } = useAuth();
-  const { updateUser } = useAuth();
 
+  const navigate = useNavigate();
 
-  // close snakbar alert if clicked off screen
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -35,69 +33,44 @@ export default function SignIn() {
     setSnackbarOpen(false);
   };
 
-  // if users click dign up redirect to sign up screen
   const handleSignInClick = () => {
     navigate("/signup");
   };
 
-  // sends user token to server for verification
-  const sendTokenToServer = async (token) => {
-    try {
-      const response = await fetch("http://localhost:3000/verify-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token }),
-      });
+  // // sends user token to server for verification
+  // const sendTokenToServer = async (token) => {
+  //   try {
+  //     const response = await fetch("http://localhost:3000/verify-token", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ token }),
+  //     });
 
-      setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     setLoading(true);
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (response.ok) {
-        console.log("Token verified successfully");
-        console.log("User ID:", data.googleUserId);
-        const user = await verifyUserId(data.googleUserId);
+  //     if (response.ok) {
+  //       console.log("Token verified successfully");
+  //       // show snackbar message
+  //       navigate("/homepage");
+  //     } else {
+  //       // turn off loading bar
+  //       setLoading(false);
+  //       console.error("Token verification failed:", data.error);
+  //     }
+  //   } catch (error) {
+  //     // show snackbar message that log in failed
+  //     setSnackbarMessage("Login failed!");
+  //     setSnackbarSeverity("error");
+  //     setSnackbarOpen(true);
+  //     console.error("Error during token verification:", error);
+  //   }
+  // };
 
-        const userInfo = {
-          firstname: user.firstname,
-          lastname: user.lastname,
-          username: user.username,
-          phoneNumber: user.phoneNumber,
-          googleId: data.googleUserId,
-          email: data.email,
-          watcher: user.isWatcher,
-        }
-
-        updateUser(userInfo);
-
-        navigate(`/homepage`);
-      } else {
-        // turn off loading bar
-        setLoading(false);
-        console.error("Token verification failed:", data.error);
-      }
-    } catch (error) {
-      // show snackbar message that log in failed
-      setSnackbarMessage("Login failed!");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      console.error("Error during token verification:", error);
-    }
-  };
-
-  const verifyUserId = async (googleId) => {
-    try {
-      const user = await getUser(googleId); 
-      return user;
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  };
-
-  // if users enter log in info without oauth
   const handleSignIn = async () => {
     try {
       // initiate loading bar
@@ -106,18 +79,16 @@ export default function SignIn() {
       // fake loading time
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const googleIdToken = response.credential;
-
-      // Send the token to the server for verification
-      await sendTokenToServer(googleIdToken);
-
+      if (!response.ok) {
+        throw new Error("Login failed!");
+      }
       // if successful
       setSnackbarMessage("Login successful!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       navigate("/homepage");
     } catch (error) {
-      // if error
+      //if error
       setSnackbarMessage("Login failed!");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
@@ -127,26 +98,37 @@ export default function SignIn() {
     }
   };
 
-  const handleCallbackResponse = (response) => {
-    console.log("Encoded JWT ID token:" + response.credential);
-    const googleIdToken = response.credential;
-
-    sendTokenToServer(googleIdToken);
+  const handleLoginSuccess = () => {
+    console.log("login success!");
   };
 
-  const google = window.google;
-  useEffect(() => {
-    google.accounts.id.initialize({
-      client_id:
-        "654380610871-b70h1a8224333s0jgls1fvhsrmq3r0p4.apps.googleusercontent.com",
-      callback: handleCallbackResponse,
-    });
+  const handleLoginFailure = (response) => {
+    console.log("login failure!");
+    console.log("\t🥩 response:", response);
+    if (response.error) {
+      console.error("error code:", response.error);
+      if (response.details) {
+        console.error("error details:", response.details);
+      }
+    }
+  };
 
-    google.accounts.id.renderButton(document.getElementById("sign-in-div"), {
-      theme: "outline",
-      size: "large",
-    });
-  }, []);
+  // const google = window.google;
+  // const handleCallbackResponse = (response) => {
+  //   console.log("Encoded JWT ID token:" + response.credential);
+  // };
+  // useEffect(() => {
+  //   google.accounts.id.initialize({
+  //     client_id:
+  //       "654380610871-b70h1a8224333s0jgls1fvhsrmq3r0p4.apps.googleusercontent.com",
+  //     callback: handleCallbackResponse,
+  //   });
+
+  //   google.accounts.id.renderButton(document.getElementById("sign-in-div"), {
+  //     theme: "outline",
+  //     size: "large",
+  //   });
+  // }, []);
 
   return (
     <div className="login">
@@ -221,6 +203,15 @@ export default function SignIn() {
           </Box>
         </Card>
         <div id="sign-in-div"></div>
+        {/* <GoogleLogin
+        clientId="654380610871-b70h1a8224333s0jgls1fvhsrmq3r0p4.apps.googleusercontent.com"
+        buttonText="Login with Google"
+        onSuccess={handleLoginSuccess}
+        onFailure={handleLoginFailure}
+        cookiePolicy={"single_host_origin"}
+        data-ux_mode="redirect"
+        data-login_uri="http://localhost:3000/auth/google/callback"
+      /> */}
       </Box>
     </div>
   );
