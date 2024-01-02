@@ -1,13 +1,13 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   // mode: "production",
-  entry: './client/index.js',
+  entry: "./client/index.js",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build'),
-    publicPath: '/',
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "build"),
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -15,18 +15,15 @@ module.exports = {
         test: /\.jsx?/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: [
-              ['@babel/env', { targets: 'defaults' }],
-              ['@babel/react'],
-            ],
+            presets: [["@babel/env", {targets: 'defaults'}],["@babel/react"]]
           },
         }, //
       },
       {
         test: /\.(scss|css)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|cur)$/,
@@ -39,14 +36,14 @@ module.exports = {
             },
           },
         ],
-      },
+      }
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Development',
-      template: 'index.html',
-      publicPath: '/',
+      title: "Development",
+      template: "index.html",
+      publicPath: '/'
     }),
   ],
   devServer: {
@@ -55,12 +52,11 @@ module.exports = {
     client: {
       overlay: false,
     },
-
+  
     static: {
-      publicPath: '/build',
-      directory: path.join(__dirname, 'build'),
+      publicPath: "/build",
+      directory: path.join(__dirname, "build"),
     },
-    proxy: { '/**': 'http://localhost:3000' }, //added this to do postman requests
     port: 8080,
   },
 };
