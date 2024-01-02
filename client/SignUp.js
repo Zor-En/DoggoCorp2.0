@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
 import Link from "@mui/material/Link";
@@ -9,6 +9,8 @@ import Button from "@mui/material/Button";
 import SnackbarAlert from "./components/SnackbarAlert";
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from "react-router";
+import { useAuth } from './components/Authorization';
+import PhoneNumberField from "./components/PhoneNumField";
 import Sky from "./components/Sky";
 import HeaderDog from "./components/HeaderDog";
 import Footers from "./components/Footer";
@@ -21,15 +23,24 @@ export default function SignUp() {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [loading, setLoading] = useState(false);
 
+    // stores watcher state as a global variable
+  let watcherState = false;
+
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-  const handleSetWatcher = () => setWatcher(!watcher);
+  const handleSetWatcher = () => {
+    const newWatcherValue = !watcher;
+    watcherState = !watcher;
+    setWatcher(newWatcherValue);
+    console.log("Watcher state:", newWatcherValue);
+  };
 
   const navigate = useNavigate();
+  const { createUser } = useAuth();
+  const { updateUser } = useAuth();
 
   const handleSignInClick = () => {
     navigate('/signin');
   };
-
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -38,34 +49,98 @@ export default function SignUp() {
     setSnackbarOpen(false);
   };
 
-  const handleSignIn = async () => {
+  // sends user token to server for verification
+  const sendTokenToServer = async (token) => {
     try {
-    // initiate loading bar
-    setLoading(true); 
+      const response = await fetch("http://localhost:3000/verify-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
 
-    // fake loading time
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    if (!response.ok){
-      throw new Error('Login failed!');
-    }
-    // if successful
-    setSnackbarMessage("Login successful!");
-    setSnackbarSeverity("success");
-    setSnackbarOpen(true);
-    navigate('/homepage');
-    
-    }catch(error){
-    //if error
-    setSnackbarMessage("Login failed!");
-    setSnackbarSeverity("error");
-    setSnackbarOpen(true);
-    }
-    finally {
-      // turn off loading bar
-      setLoading(false); 
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Token verified successfully");
+        console.log("User Email:", data.email);
+        // sends googleId, google email, and the watcher state to createUser
+        CreateUser(data.googleUserId, data.email, watcherState)
+        navigate(`/homepage`);
+      } else {
+        // turn off loading bar
+        setLoading(false);
+        console.error("Token verification failed:", data.error);
+      }
+    } catch (error) {
+      // show snackbar message that log in failed
+      setSnackbarMessage("Login failed!");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      console.error("Error during token verification:", error);
     }
   };
+
+  const CreateUser = async (googleId, email, isWatcher) => {
+    const form = document.getElementById('form');
+    const formData = new FormData(form);
+    // console.log(formData.get('firstName'))
+    // console.log(formData.get('lastName'))
+    // console.log(formData.get('userName'))
+    // console.log(formData.get('password'))
+    // console.log(formData.get('phoneNumber'))
+    // console.log(googleId)
+    // console.log(email)
+    // console.log('CreatUser Watcher State:',isWatcher)
+
+    const newUser = {
+      firstname: formData.get('firstName'),
+      lastname: formData.get('lastName'),
+      username: formData.get('userName'),
+      password: formData.get('password'),
+      phoneNumber: formData.get('phoneNumber'),
+      googleId: googleId,
+      email: email,
+      watcher: isWatcher
+    };
+
+    try {
+      const userId = await createUser(newUser); 
+      if (response.ok){
+      updateUser(newUser);
+      return userId;
+      } else {
+        console.error("Unable to create user:");
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
+
+  const handleCallbackResponse = (response) => {
+    console.log("Encoded JWT ID token:" + response.credential);
+    const googleIdToken = response.credential;
+
+    sendTokenToServer(googleIdToken);
+  };
+
+  const google = window.google;
+  useEffect(() => {
+    google.accounts.id.initialize({
+      client_id:
+        "654380610871-b70h1a8224333s0jgls1fvhsrmq3r0p4.apps.googleusercontent.com",
+      callback: handleCallbackResponse,
+    });
+
+    google.accounts.id.renderButton(document.getElementById("sign-in-div"), {
+      theme: "outline",
+      size: "large",
+    });
+  }, []);
 
   return (
     <>
@@ -88,15 +163,35 @@ export default function SignUp() {
             </Typography>
           </Box>
 
-          <Box component="form">
+          <Box component="form" id="form">
+          {/* Add fields for first name and last name */}
+          <Box display="flex" gap={2}>
+            <TextField
+              label="First Name"
+              name="firstName"
+              type="text"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Last Name"
+              name="lastName"
+              type="text"
+              fullWidth
+              margin="normal"
+            />
+            </Box>
+            < PhoneNumberField />
             <TextField
               label="Username"
+            name="userName"
               type="username"
               fullWidth
               margin="normal"
             />
             <TextField
               label="Password"
+            name="password"
               type="password"
               fullWidth
               margin="normal"
@@ -119,8 +214,8 @@ export default function SignUp() {
               variant="text"
               color="primary"
               fullWidth
-              mt={2}
-              onClick={handleSignIn}
+              mt={2} /*
+              onClick={handleSignIn}*/
               disabled={loading}
             >
               Sign In
@@ -149,7 +244,39 @@ export default function SignUp() {
             </Typography>
           </Box>
         </Card>
+      <div id="sign-in-div"></div>
       </Box>
     </>
   );
 }
+
+
+
+  // const handleSignIn = async () => {
+  //   try {
+  //   // initiate loading bar
+  //   setLoading(true); 
+
+  //   // fake loading time
+  //   await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  //   if (!response.ok){
+  //     throw new Error('Login failed!');
+  //   }
+  //   // if successful
+  //   setSnackbarMessage("Login successful!");
+  //   setSnackbarSeverity("success");
+  //   setSnackbarOpen(true);
+  //   // navigate('/homepage');
+    
+  //   }catch(error){
+  //   //if error
+  //   setSnackbarMessage("Login failed!");
+  //   setSnackbarSeverity("error");
+  //   setSnackbarOpen(true);
+  //   }
+  //   finally {
+  //     // turn off loading bar
+  //     setLoading(false); 
+  //   }
+  // };

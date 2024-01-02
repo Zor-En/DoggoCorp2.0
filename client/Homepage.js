@@ -6,6 +6,8 @@ import HeaderDog from "./components/HeaderDog";
 import Sky from "./components/Sky";
 import Footers from "./components/Footer";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { useAuth } from "./components/Authorization";
+
 
 
 const theme = createTheme({
@@ -59,7 +61,8 @@ const theme = createTheme({
 
 const HomePage = () => {
   const [value, setValue] = useState("");
-
+  const { user } = useAuth();
+  console.log('Homepage User:', user);
   return (
     <div>
       <Sky />
