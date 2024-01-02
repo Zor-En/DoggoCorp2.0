@@ -12,10 +12,10 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       console.log("Response from getUser:", data);
       const user = data.user;
+      console.log('Use data from getUser:', user)
   
       if (!user) {
-        console.error("User not found:", data);
-        navigate("/signup");
+        console.error("User not found:", data)
       }
   
       return user;

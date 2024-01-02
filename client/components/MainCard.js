@@ -82,12 +82,6 @@ export default function MainCard() {
         <Card sx={cardStyle}>
           <CardHeader
             fontFamily="Pixelify Sans"
-            // avatar={
-            //   <Avatar sx={{ bgcolor: red[500] }} aria-label="Dog Init">
-            //     J
-            //   </Avatar>
-            // }
-            // title="Dog Name"
             title="Eboshi"
             titleTypographyProps={{ variant: "h3" }}
             sx={{
@@ -95,12 +89,6 @@ export default function MainCard() {
               textShadow:
                 "-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e",
             }}
-            // action={
-            //   <IconButton aria-label="settings">
-            //     <MoreVertIcon />
-            //   </IconButton>
-            // }
-            // subheader="Date added - ?"
           />
           <CardMedia
             component="img"
@@ -109,12 +97,23 @@ export default function MainCard() {
             alt="Pixelized picture of dog -?"
             sx={{ objectFit: "contain" }}
           />
-          <CardContent>
+          <CardContent sx={{ textAlign: "center" }}>
             <Typography variant="body2" color="text.secondary">
               Basic Dog Info
             </Typography>
+            <Button variant="outlined">Edit</Button>
           </CardContent>
-          <CardActions disableSpacing>
+          <CardActions sx={{ justifyContent: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mb: 1,
+              }}
+            >
+              Add / Remove Watcher
+            </Box>
             <IconButton aria-label="Unsure">
               <AddCircleIcon color="primary" />
             </IconButton>

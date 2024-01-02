@@ -59,10 +59,37 @@ const theme = createTheme({
 });
 
 
+
 const HomePage = () => {
   const [value, setValue] = useState("");
   const { user } = useAuth();
   console.log('Homepage User:', user);
+
+  // const [dogsArr, setDogsArr] = useState([]);
+  // const getDogs = async () => {
+  //   try {
+  //     const requestOptions = {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'Application/JSON',
+  //       },
+  //       body: JSON.stringify({ userId: user }), 
+  //     };
+  //     console.log('getting dogs from database associated with userID: ', user );
+  //     const response = await fetch('/fetchDogs', requestOptions);
+  //     const data = await response.json();
+  //     if (!response.ok) console.log('ERROR, not 200');
+  //     console.log('async call for data', data);
+  //     setProjectsArr(data);
+  //     console.log('all dogs', dogsArr);
+  //   } catch (error) {
+  //     console.log(error, 'error accessing database');
+  //   }
+  // };
+  // useEffect(() => {
+  //   console.log('useEffect is working');
+  //   getProjects();
+  // }, []);
   return (
     <div>
       <Sky />

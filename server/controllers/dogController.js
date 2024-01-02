@@ -16,8 +16,8 @@ const dogController = {};
 
 dogController.addDog = async (req, res, next) => {
   const {
-    dog_name,
-    birthdate,
+    name,
+    age,
     weight,
     breed,
     meals,
@@ -29,8 +29,8 @@ dogController.addDog = async (req, res, next) => {
   // console.log('there was an attempt to create a dog')
  try {
     const result = await pool.query(
-      'INSERT INTO dogs (dog_name, birthdate, weight, breed, meals, medication, groomer, miscellaneous, owner_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      [dog_name, birthdate, weight, breed, meals, medication, groomer, miscellaneous, owner_id]
+      'INSERT INTO dogs (dog_name, age, weight, breed, meals, medication, groomer, miscellaneous, owner_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      [name, age, weight, breed, meals, medication, groomer, miscellaneous, owner_id]
     );
     console.log("result at dogController.addDog: ", result.rows[0])
     // Send the inserted dog data back to the client if needed
@@ -77,17 +77,20 @@ dogController.addDog = async (req, res, next) => {
 
 dogController.fetchDogs = async (req, res, next) => {
   console.log('fetchDogs request body', req.body);
-    const userId = req.body.ssid;
-    const role = req.body.role;
+    // const userId = req.body.ssid;
+    // const role = req.body.role;
   const dogs = [];
   //query text
+  try {
     if (role === 'owner') {
+      const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
       //query for owner's dogs
       //Dogs.find()
-      console.log('returning dogs to owner');
+      console.log('returning results', response);
     } else {
       //query for sitter's dogs
-      console.log('fetching dogs for sitter');
+      const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
+      console.log('fetching dogs for sitter', response);
     }
   if (dogs.length === 0) {
     //error handling
@@ -97,6 +100,10 @@ dogController.fetchDogs = async (req, res, next) => {
 
     return next();
   }
+ } catch (error) {
+  console.error('Error fetching dogs:', response.status)
+ }
 };
+
 
 module.exports = dogController;
