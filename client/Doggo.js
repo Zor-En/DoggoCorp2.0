@@ -31,7 +31,14 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 // import { styled } from "@mui/material/styles";
 // import { DigitalClock } from '@mui/x-date-pickers/DigitalClock';
 // import DateFnsUtils from '@date-io/date-fns';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
+const theme = createTheme({
+  //this shit is not working
+  typography: {
+    fontFamily: ["Pixelify Sans", "sans-serif"].join(","),
+  },
+});
 
 const DogInputPage = () => {
   const [dogData, setDogData] = useState({
@@ -156,7 +163,7 @@ const DogInputPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(dogData);
-    // Submit logic here
+    formData.append("photo", dogData.photo);
   };
 
   // for file upload button
