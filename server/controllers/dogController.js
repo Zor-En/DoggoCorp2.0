@@ -1,8 +1,50 @@
 // const pgp = require('pg-promise')();
 // const connectionString = 'postgres://jqjdmzsq:5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q@mahmud.db.elephantsql.com/jqjdmzsq'
 // const db = pgp(connectionString);
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  user: 'jqjdmzsq',
+  host: 'mahmud.db.elephantsql.com',
+  database: 'jqjdmzsq',
+  password: '5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q',
+  port: 5432,
+});
+
 
 const dogController = {};
+
+dogController.addDog = async (req, res, next) => {
+  const {
+    dog_name,
+    birthdate,
+    weight,
+    breed,
+    meals,
+    medication,
+    groomer,
+    miscellaneous,
+    owner_id,
+  } = req.body;
+  // console.log('there was an attempt to create a dog')
+ try {
+    const result = await pool.query(
+      'INSERT INTO dogs (dog_name, birthdate, weight, breed, meals, medication, groomer, miscellaneous, owner_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      [dog_name, birthdate, weight, breed, meals, medication, groomer, miscellaneous, owner_id]
+    );
+    console.log("result at dogController.addDog: ", result.rows[0])
+    // Send the inserted dog data back to the client if needed
+    res.locals.currentDog = result.rows[0];
+    next();
+  } catch (error) {
+      return next({
+        log: `Error happened at middleware dogController.addDog ${error}`,
+        message: { error: 'Dog database profile creation error' }}
+      );
+  }
+}
+  
+
 
 // //function to initialize the SQL dog table
 

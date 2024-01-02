@@ -113,9 +113,9 @@ app.get('/signin/:googleId', userController.verifyUser, (req,res) => {
   res.status(200).json(res.locals.user)
 })
 
-// app.post('/addDog', dogController.addDog, (req, res) => {
-//   res.status(200).json(res.locals.newDog);
-// });
+app.post('/adddog', dogController.addDog, (req, res) => {
+  res.status(200).json(res.locals.currentDog);
+});
 
 // app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
 //   // if (res.locals.session) {
