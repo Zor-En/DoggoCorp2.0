@@ -22,19 +22,24 @@ router.post(
   }
 );
 
-router.use(
-  '/login',
-  userController.verifyUser,
-  sessionController.startSession,
-  cookieController.setSSIDCookie,
-  (req, res) => {
-    if (res.locals.session) {
-      console.log('Logged in successfully!');
-      res.status(200).json(res.locals.newUser);
-      return res.redirect('/homepage');
-    }
-  }
-);
+router.post('/login/no-oauth', userController.noOAuthLogIn, (req, res) => {
+  console.log('/login/no-oauth route hit');
+  res.status(200).json(res.locals.user);
+});
+
+// router.use(
+//   '/login',
+//   userController.verifyUser,
+//   sessionController.startSession,
+//   cookieController.setSSIDCookie,
+//   (req, res) => {
+//     if (res.locals.session) {
+//       console.log('Logged in successfully!');
+//       res.status(200).json(res.locals.newUser);
+//       return res.redirect('/homepage');
+//     }
+//   }
+// );
 
 router.get('/getAllUsers/', userController.getAllUsers, (req, res) => {
   res.status(200).json(res.locals.allUsers);

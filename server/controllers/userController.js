@@ -81,4 +81,29 @@ userController.verifyUser = async (req, res, next) => {
   }
 };
 
+userController.noOAuthLogIn = async (req, res, next) => {
+  const { username, password } = req.body;
+
+  try {
+    const data = await pool.query('SELECT * FROM users WHERE user_name = $1;', [
+      username,
+    ]);
+
+    if (data.rows.length === 0)
+      res.status(400).json({ error: 'User not found' });
+
+    const user = data.rows[0];
+
+    if (user.password !== password)
+      res.status(400).json({ error: 'Password incorrect' });
+
+    res.locals.user = user;
+    return next();
+  } catch (err) {
+    const errMessage = 'Caught userController.noOAuthLogIn error: ' + err;
+    console.log(errMessage);
+    res.status(500).json({ error: errMessage });
+  }
+};
+
 module.exports = userController;
