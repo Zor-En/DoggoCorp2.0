@@ -89,20 +89,21 @@ userController.noOAuthLogIn = async (req, res, next) => {
       username,
     ]);
 
-    if (data.rows.length === 0)
-      res.status(400).json({ error: 'User not found' });
+    if (data.rows.length === 0) throw new Error('User not found');
 
     const user = data.rows[0];
 
-    if (user.password !== password)
-      res.status(400).json({ error: 'Password incorrect' });
+    if (user.password !== password) {
+      throw new Error('Password incorrect');
+    }
 
     res.locals.user = user;
     return next();
   } catch (err) {
     const errMessage = 'Caught userController.noOAuthLogIn error: ' + err;
     console.log(errMessage);
-    res.status(500).json({ error: errMessage });
+    console.log(err);
+    res.status(400).json({ error: errMessage });
   }
 };
 
