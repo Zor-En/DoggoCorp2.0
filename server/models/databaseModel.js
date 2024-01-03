@@ -11,7 +11,7 @@ const pool = new Pool({
 //   database: 'jqjdmzsq',
 //   password: '5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q',
 //   port: 5432,
-    connection:  'postgres://jqjdmzsq:5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q@mahmud.db.elephantsql.com/jqjdmzsq'
+    connectionString:  'postgres://jqjdmzsq:5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q@mahmud.db.elephantsql.com/jqjdmzsq'
 });
 
 module.exports = {

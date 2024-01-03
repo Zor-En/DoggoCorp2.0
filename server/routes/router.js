@@ -34,7 +34,7 @@ router.use(
   }
 );
 
-router.get('/getAllUsers', userController.getAllUsers, (req, res) => {
+router.get('/getAllUsers/', userController.getAllUsers, (req, res) => {
   res.status(200).json(res.locals.allUsers);
 });
 
@@ -48,42 +48,40 @@ router.get(
     }
   );
   
-  router.use('/signin/:googleId', userController.verifyUser);
-  
-  router.get('/signin/:googleId', userController.verifyUser, (req,res) => {
-    console.log('User Verified. User Id:', res.locals.user)
-    res.status(200).json(res.locals.user)
-  })
-  
-  router.post('/addDog', dogController.addDog, (req, res) => {
-    res.status(200).json(res.locals.currentDog);
-  });
-  
-  // app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
-  //   // if (res.locals.session) {
-  //   console.log('Going to homepage');
-  //   return res.redirect('/homepage');
-  //   // }
-  // });
-  
-  //to query dogs
-  // app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
-  //   res.status(200).json(res.locals.dogs);
-  // });
-  
-  // //to submit to addDogs
-  // app.post('/addDog', dogController.createDogTable, (req, res) => {
-  //   console.log(
-  //     'finished adding dog, sending res.locals.newDog',
-  //     res.locals.newDog
-  //   );
-  //   res.status(200).json(res.locals.newDog);
-  // });
-  
-  // route to add dogs page
-  // app.get('/addDog', (req, res) => {
-  //   console.log('going to add dog page');
-  //   return res.redirect('/homepage');
-  // });
-  
-  module.exports = router
+router.get('/signin/:googleId', userController.verifyUser, (req,res) => {
+  console.log('User Verified. User Id:', res.locals.user)
+  res.status(200).json(res.locals.user)
+})
+
+router.post('/addDog', dogController.addDog, (req, res) => {
+  res.status(200).json(res.locals.currentDog);
+});
+
+// app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
+//   // if (res.locals.session) {
+//   console.log('Going to homepage');
+//   return res.redirect('/homepage');
+//   // }
+// });
+
+//to query dogs
+// app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
+//   res.status(200).json(res.locals.dogs);
+// });
+
+// //to submit to addDogs
+// app.post('/addDog', dogController.createDogTable, (req, res) => {
+//   console.log(
+//     'finished adding dog, sending res.locals.newDog',
+//     res.locals.newDog
+//   );
+//   res.status(200).json(res.locals.newDog);
+// });
+
+// route to add dogs page
+// app.get('/addDog', (req, res) => {
+//   console.log('going to add dog page');
+//   return res.redirect('/homepage');
+// });
+
+module.exports = router

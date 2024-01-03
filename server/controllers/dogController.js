@@ -1,3 +1,4 @@
+const pool = require('../models/databaseModel')
 
 const dogController = {};
 
@@ -81,8 +82,7 @@ dogController.fetchDogs = async (req, res, next) => {
 
     // const user = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
     //jarod's info hardcoded for presentation
-    const response =
-      await pool.query(`SELECT u.first_name as Owner,d.* FROM dogs d join users u ON d.owner_id = u.user_id
+    const response = await pool.query(`SELECT u.first_name as Owner,d.* FROM dogs d join users u ON d.owner_id = u.user_id
         where d.owner_id = 6;`);
     //query for owner's dogs
     //Dogs.find()
@@ -101,7 +101,7 @@ dogController.fetchDogs = async (req, res, next) => {
       return next();
     }
   } catch (error) {
-    console.error('Error fetching dogs:', response.status);
+    console.error('Error fetching dogs:', error);
   }
 };
 
