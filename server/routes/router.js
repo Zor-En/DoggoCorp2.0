@@ -27,20 +27,6 @@ router.post('/login/no-oauth', userController.noOAuthLogIn, (req, res) => {
   res.status(200).json(res.locals.user);
 });
 
-// router.use(
-//   '/login',
-//   userController.verifyUser,
-//   sessionController.startSession,
-//   cookieController.setSSIDCookie,
-//   (req, res) => {
-//     if (res.locals.session) {
-//       console.log('Logged in successfully!');
-//       res.status(200).json(res.locals.newUser);
-//       return res.redirect('/homepage');
-//     }
-//   }
-// );
-
 router.get('/getAllUsers/', userController.getAllUsers, (req, res) => {
   res.status(200).json(res.locals.allUsers);
 });
@@ -63,6 +49,7 @@ router.get('/signin/:googleId', userController.verifyUser, (req, res) => {
 router.post('/addDog', dogController.addDog, (req, res) => {
   res.status(200).json(res.locals.currentDog);
 });
+
 
 // app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
 //   // if (res.locals.session) {

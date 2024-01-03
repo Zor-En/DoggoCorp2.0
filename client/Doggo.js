@@ -45,8 +45,8 @@ import {
 const DogInputPage = () => {
   const [dogData, setDogData] = useState({
     name: '',
-    age: '',
-    weight: '',
+    age: 0,
+    weight: 0,
     breed: '',
     meals: [],
     medications: [],
