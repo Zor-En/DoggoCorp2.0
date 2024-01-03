@@ -51,6 +51,7 @@ router.get(
   dogController.fetchDogs,
   (req, res) => {
     console.log('dogs fetched');
+    console.log(res.locals.dogs);
     res.status(200).json(res.locals.dogs);
   }
 );

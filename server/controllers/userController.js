@@ -52,7 +52,10 @@ userController.getAllUsers = (req, res, next) => {
     .then(() => next())
     .catch((err) => {
       console.log(err);
-      next(err);
+      next({
+        log: 'Caught userController.getAllUsers middleware error: ' + err,
+        message: { error: err.toString() },
+      });
     });
 };
 
@@ -70,7 +73,7 @@ userController.verifyUser = async (req, res, next) => {
 
     if (user.rows.length > 0) {
       req.locals.user = user.rows[0];
-      next();
+      return next();
     } else {
       // User not found, send an error response
       res.status(401).json({ error: 'User not authorized' });
@@ -85,25 +88,29 @@ userController.noOAuthLogIn = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const data = await pool.query('SELECT * FROM users WHERE user_name = $1;', [
-      username,
-    ]);
+    const data = await pool.query(
+      'SELECT * FROM users ' + 'WHERE user_name = $1;',
+      [username]
+    );
 
-    if (data.rows.length === 0) throw new Error('User not found');
+    if (data.rows.length === 0)
+      throw new Error('User not found', { cause: { code: 400 } });
 
     const user = data.rows[0];
-
-    if (user.password !== password) {
-      throw new Error('Password incorrect');
-    }
+    if (user.password !== password)
+      throw new Error('Password incorrect', { cause: { code: 400 } });
 
     res.locals.user = user;
     return next();
   } catch (err) {
     const errMessage = 'Caught userController.noOAuthLogIn error: ' + err;
     console.log(errMessage);
-    console.log(err);
-    res.status(400).json({ error: errMessage });
+    console.log(err.cause);
+    return next({
+      log: 'Caught userController.noOAuthLogIn error: ' + err,
+      status: err.cause.code || 500,
+      message: { error: err.toString() },
+    });
   }
 };
 

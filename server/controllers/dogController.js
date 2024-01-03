@@ -81,25 +81,10 @@ dogController.fetchDogs = async (req, res, next) => {
 
     // const user = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
     //jarod's info hardcoded for presentation
-    const response =
-      await pool.query(`SELECT u.first_name as Owner,d.* FROM dogs d join users u ON d.owner_id = u.user_id
-        where d.owner_id = 6;`);
-    //query for owner's dogs
-    //Dogs.find()
-
-    // } else {
-    //query for sitter's dogs
-    // const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
-    // console.log('fetching dogs for sitter', response);
-    // }
-    if (response.rows.length === 0) {
-      //error handling
-      return next();
-    } else {
-      res.locals.dogs = response.rows;
-
-      return next();
-    }
+    const response = await pool.query(`SELECT * FROM dogs`);
+    res.locals.dogs = response.rows;
+    console.log(res.locals.dogs);
+    return next();
   } catch (error) {
     console.error('Error fetching dogs:', error);
   }
