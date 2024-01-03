@@ -35,6 +35,7 @@ import {
   DoggoBoxDataStyle,
   DoggoBoxAddingStyle,
 } from './stylesheets/DoggoStyle';
+import { useAuth } from './components/Authorization';
 
 //for custom file upload button
 // import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -43,10 +44,13 @@ import {
 // import DateFnsUtils from '@date-io/date-fns';
 
 const DogInputPage = () => {
+  const { user, addDog } = useAuth();
+  console.log('in Doggo.js', user);
   const [dogData, setDogData] = useState({
     name: '',
-    age: 0,
-    weight: 0,
+    owner_id: user.user_id,
+    age: '',
+    weight: '',
     breed: '',
     meals: [],
     medications: [],
@@ -169,13 +173,9 @@ const DogInputPage = () => {
     console.log(dogData);
     // Submit logic here
     try {
-      const response = await fetch('/addDog', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dogData),
-      });
+      const response = await addDog(dogData);
+
+      console.log('added dog is ', response);
 
       // Check if the request was successful
       if (response.ok) {

@@ -45,30 +45,6 @@ export const AuthProvider = ({ children }) => {
       .then((res) => res.json())
       .catch((err) => console.log(err));
 
-  // const createUser = async (newUser) => {
-  //   try {
-  //     const response = await fetch(`http://localhost:3000/signup`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(newUser),
-  //     });
-
-  //     const data = await response.json();
-  //     console.log('user is', data);
-
-  //     if (response.ok) {
-  //       console.log('User created successfully');
-  //       return data;
-  //     } else {
-  //       throw new Error(`User creation failed: ${data.error}`);
-  //     }
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // };
-
   const logout = () => {
     setUser(null);
   };
@@ -78,9 +54,39 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
   };
 
+  const fetchDogs = (userId) =>
+    fetch(`http://localhost:3000/fetchDogs/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+
+  const addDog = (dogData) =>
+    fetch(`http://localhost:3000/addDog`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dogData),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+
   return (
     <AuthContext.Provider
-      value={{ user, getUser, createUser, logout, updateUser, signInUser }}
+      value={{
+        user,
+        getUser,
+        createUser,
+        logout,
+        updateUser,
+        signInUser,
+        addDog,
+        fetchDogs,
+      }}
     >
       {children}
     </AuthContext.Provider>
