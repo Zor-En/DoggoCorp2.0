@@ -49,6 +49,7 @@ const DogInputPage = () => {
   const [dogData, setDogData] = useState({
     name: '',
     owner_id: user.user_id,
+    birthday: '',
     age: '',
     weight: '',
     breed: '',
@@ -165,7 +166,15 @@ const DogInputPage = () => {
   };
 
   const handlePhotoChange = (e) => {
-    setDogData({ ...dogData, photo: e.target.files[0] });
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const dataUrl = reader.result;
+        setDogData({ ...dogData, photo: dataUrl });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -259,6 +268,14 @@ const DogInputPage = () => {
               }}
             />
           </Box>
+          <input
+            type='date'
+            name='birthday'
+            onChange={(e) => {
+              setDogData({ ...dogData, birthday: e.target.value });
+              console.log('birthday is ', e.target.value);
+            }}
+          />
           <TextField
             borderRadius='30'
             label='Breed'
@@ -413,17 +430,6 @@ const DogInputPage = () => {
           {dogData.groomers.map((groomers, index) => (
             <Box key={index} sx={{ width: '100%', mb: 2 }}>
               <Box sx={DoggoBoxDataStyle}>
-                {/* <FormControl sx={{ mr: 1, flex: 1 }}>
-                <InputLabel htmlFor={`groomers-type-select-${index}`} >Groomer Name</InputLabel>
-                  <TextField
-                    label="Groomer's Name"
-                    type="text"
-                    fullWidth
-                    margin="normal"
-                    value={groomers.name}
-                    onChange={(e) => handleGroomerChange(index, 'name', e.target.value)}
-                  />
-                </FormControl> */}
                 <FormControl sx={{ mr: 1, flex: 1 }}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker

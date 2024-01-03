@@ -17,6 +17,7 @@ CREATE TABLE dogs (
     birthdate DATE,
     weight DECIMAL(5, 2),
     breed VARCHAR(255),
+    photo VARCHAR(255),
     meals VARCHAR(255),
     medication VARCHAR(255),
     groomer VARCHAR(255),

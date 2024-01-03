@@ -37,7 +37,6 @@ router.get(
   dogController.fetchDogs,
   (req, res) => {
     console.log('dogs fetched');
-    console.log(res.locals.dogs);
     res.status(200).json(res.locals.dogs);
   }
 );
@@ -47,9 +46,15 @@ router.get('/signin/:googleId', userController.verifyUser, (req, res) => {
   res.status(200).json(res.locals.user);
 });
 
-router.post('/addDog', dogController.addDog, (req, res) => {
-  res.status(200).json(res.locals.currentDog);
-});
+router.post(
+  '/addDog',
+  dogController.addDog,
+  dogController.saveDogPhoto,
+  dogController.updateDogPhoto,
+  (req, res) => {
+    res.status(200).json(res.locals.currentDog);
+  }
+);
 
 // app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
 //   // if (res.locals.session) {
