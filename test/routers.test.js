@@ -8,11 +8,14 @@ describe('Routes', ()=> {
             it('responds with 200 status and text containing users', () => {
                 return request(server)
                     .get('/fetchDogs/')
-                    .expect('Content-Type', /text\/html/)
+                    .expect('Content-Type', "application/json; charset=utf-8")
                     .expect(200);
             });
         })
+    describe('/', ()=>{
+        describe()
     })
+})
 
 
 

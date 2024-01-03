@@ -1,46 +1,21 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import {
-  Box,
-  Button,
-  Toolbar,
-} from "@mui/material";
+import { Box, Button, Toolbar } from '@mui/material';
 import CustomizedBreadcrumbs from './Breadcrumbs';
 import '../stylesheets/App.css';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { HeaderStyle, typographyStyle } from '../stylesheets/HeaderStyle';
 
 const Header = () => {
-  const headerFont = createTheme({  //this shit is not working
-    typography: {
-      fontFamily: [
-        'Pixelify Sans',
-        'sans-serif',
-      ].join(','),
-    },
-  });
-
   return (
     <div>
-      <ThemeProvider theme={headerFont}>
-        <Box
-          minHeight="80vh"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 3,
-          }}
-        >
+      <ThemeProvider theme={HeaderStyle.theme}>
+        <Box minHeight='80vh' sx={HeaderStyle.style}>
           <Typography
             gutterBottom
-            variant="h2"
-            textAlign="center"
-            sx={{
-              color: "pink",
-              textShadow:
-                "-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e",
-            }}
+            variant='h2'
+            textAlign='center'
+            sx={typographyStyle.style}
           >
             O hai frens!
             <br></br>
