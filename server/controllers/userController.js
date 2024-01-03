@@ -1,47 +1,9 @@
-
-const pgp = require('pg-promise')();
-const connectionString = 'postgres://jqjdmzsq:5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q@mahmud.db.elephantsql.com/jqjdmzsq'
-const db = pgp(connectionString);
-
-const { Pool } = require('pg');
-
-const pool = new Pool({
-  user: 'jqjdmzsq',
-  host: 'mahmud.db.elephantsql.com',
-  database: 'jqjdmzsq',
-  password: '5np5FJ6kJ3TSTKppoo5ZDrPSV0ZaGy8q',
-  port: 5432,
-});
+const pool = require('../models/databaseModel')
 
 const userController = {};
 
-// userController.createUserTable = async (req, res, next) => {
-//   counter = 0;
-//     try {
-//         const createUserTableQuery =  
-//         `DROP TABLE users CREATE TABLE users ( 
-//             user_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-//             user_fname VARCHAR(50) NOT NULL, 
-//             user_lname VARCHAR(50) NOT NULL,
-//             user_phone CHAR(9) NOT NULL,
-//             user_email VARCHAR(100) NOT NULL
-//            );`
-//         await db.none(this.createDogTableQuery);
-//         console.log('Users Table created successfully');
-//         counter++;
-//         next();
-//     }   
-//     catch (err) {
-//       return(next({
-//         log: `Error happened at middleware create user Table: ${err}`,
-//         message: { error: 'User Table not created' }}
-//       ));
-// }
-// },
-
 
 // INSERT INTO users (google_id, email, first_name, last_name, phone_number, is_owner)
-
 userController.addUser = async (req, res, next) => {
     console.log('addUser request body', req.body);
     const { firstname, lastname, username, password, phoneNumber, googleId, email, watcher } = req.body;
@@ -63,13 +25,18 @@ userController.addUser = async (req, res, next) => {
     return next();
 }
 
-// userController.verifyUser = (req, res, next) => {
-//     console.log('verifyUser request body', req.body);
-//     const { username, password, role } = req.body;
-//     //check validity
-//     //db.add(user)
-//     return next();
-// }
+userController.getAllUsers = (req, res, next) => {
+    pool
+      .query('SELECT * FROM users')
+      .then((data) => data.rows)
+      .then((data) => (res.locals.allUsers = data))
+      .then(() => next())
+      .catch((err) => {
+        console.log(err);
+        next(err);
+      });
+  };
+
 
 userController.verifyUser = async (req, res, next) => {
     console.log("starting verifyUser");
