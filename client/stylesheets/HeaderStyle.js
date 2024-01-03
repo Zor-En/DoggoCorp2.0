@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
 
 export const HeaderStyle = {
   theme: createTheme({
@@ -25,7 +26,7 @@ export const typographyStyle = {
 };
 
 export const HeaderDogStyle = {
-  theme: {
+  theme: createTheme({
     transitions: {
       // So we have `transition: none;` everywhere
       create: () => 'none',
@@ -71,29 +72,55 @@ export const HeaderDogStyle = {
           }`,
       },
     },
-  },
+  }),
   buttonStyle: {
-    fontFamily: 'Pixelify Sans',
-    fontSize: '30px',
-    color: 'white',
-    boxShadow: 'none',
-    backgroundColor: 'transparent',
-    textShadow:
-      '1px 1px #ffc2df, 2px 2px #ffc2df, 3px 3px #ffc2df, 3px 3px 3px #9e9e9e',
-    '&:hover': {
-      boxShadow: '0',
-      textShadow:
-        '1px 1px #ffc2df, 2px 2px #ffc2df, 3px 3px #ffc2df, 3px 3px 3px #9e9e9e, 1px 1px 10px white, -1px -1px 10px white',
-    },
-    '&:active': {
-      variant: 'contained',
-      boxShadow: '0',
+    variant: 'contained',
+    style: { backgroundColor: 'transparent', boxShadow: 'none' },
+    sx: {
+      fontFamily: 'Pixelify Sans',
+      fontSize: '30px',
+      color: 'white',
       boxShadow: 'none',
-      position: 'relative',
-      top: '2px',
-      left: '2px',
-      textShadow: '1px 1px #ffc2df, 3px 3px 3px #9e9e9e',
-      disableElevation: 'true',
+      textShadow:
+        '1px 1px #ffc2df, 2px 2px #ffc2df, 3px 3px #ffc2df, 3px 3px 3px #9e9e9e',
+      '&:hover': {
+        boxShadow: '0',
+        textShadow:
+          '1px 1px #ffc2df, 2px 2px #ffc2df, 3px 3px #ffc2df, 3px 3px 3px #9e9e9e, 1px 1px 10px white, -1px -1px 10px white',
+      },
+      '&:active': {
+        variant: 'contained',
+        boxShadow: '0',
+        boxShadow: 'none',
+        position: 'relative',
+        top: '2px',
+        left: '2px',
+        textShadow: '1px 1px #ffc2df, 3px 3px 3px #9e9e9e',
+        disableElevation: 'true',
+      },
     },
   },
+  // buttonStyle: {
+  //   fontFamily: 'Pixelify Sans',
+  //   fontSize: '30px',
+  //   color: 'white',
+  //   boxShadow: 'none',
+  //   textShadow:
+  //     '1px 1px #ffc2df, 2px 2px #ffc2df, 3px 3px #ffc2df, 3px 3px 3px #9e9e9e',
+  //   '&:hover': {
+  //     boxShadow: '0',
+  //     textShadow:
+  //       '1px 1px #ffc2df, 2px 2px #ffc2df, 3px 3px #ffc2df, 3px 3px 3px #9e9e9e, 1px 1px 10px white, -1px -1px 10px white',
+  //   },
+  //   '&:active': {
+  //     variant: 'contained',
+  //     boxShadow: '0',
+  //     boxShadow: 'none',
+  //     position: 'relative',
+  //     top: '2px',
+  //     left: '2px',
+  //     textShadow: '1px 1px #ffc2df, 3px 3px 3px #9e9e9e',
+  //     disableElevation: 'true',
+  //   },
+  // },
 };

@@ -14,6 +14,7 @@ router.post(
   sessionController.startSession,
   cookieController.setSSIDCookie,
   (req, res) => {
+    res.status(200).json(res.locals.newUser);
     if (res.locals.session) {
       console.log('Signed up successfully!');
       return res.redirect('/homepage');
@@ -29,6 +30,7 @@ router.use(
   (req, res) => {
     if (res.locals.session) {
       console.log('Logged in successfully!');
+      res.status(200).json(res.locals.newUser);
       return res.redirect('/homepage');
     }
   }
@@ -39,19 +41,19 @@ router.get('/getAllUsers/', userController.getAllUsers, (req, res) => {
 });
 
 router.get(
-    '/fetchDogs/',
-    // () => {console.log('starting fetch'); return next()},
-    dogController.fetchDogs,
-    (req, res) => {
-      console.log('dogs fetched');
-      res.status(200).json(res.locals.dogs);
-    }
-  );
-  
-router.get('/signin/:googleId', userController.verifyUser, (req,res) => {
-  console.log('User Verified. User Id:', res.locals.user)
-  res.status(200).json(res.locals.user)
-})
+  '/fetchDogs/',
+  // () => {console.log('starting fetch'); return next()},
+  dogController.fetchDogs,
+  (req, res) => {
+    console.log('dogs fetched');
+    res.status(200).json(res.locals.dogs);
+  }
+);
+
+router.get('/signin/:googleId', userController.verifyUser, (req, res) => {
+  console.log('User Verified. User Id:', res.locals.user);
+  res.status(200).json(res.locals.user);
+});
 
 router.post('/addDog', dogController.addDog, (req, res) => {
   res.status(200).json(res.locals.currentDog);
@@ -84,4 +86,4 @@ router.post('/addDog', dogController.addDog, (req, res) => {
 //   return res.redirect('/homepage');
 // });
 
-module.exports = router
+module.exports = router;

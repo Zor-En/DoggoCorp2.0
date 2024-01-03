@@ -1,15 +1,15 @@
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
-    google_id VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
+    user_name VARCHAR(255),
+    password VARCHAR(255),
+    google_id VARCHAR(255),
+    email VARCHAR(255),
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
     phone_number VARCHAR(14),
     is_owner BOOLEAN NOT NULL
 );
 
-DROP TABLE transactions
-DROP TABLE DOGS 
 CREATE TABLE dogs (
     dog_id SERIAL PRIMARY KEY,
     dog_name VARCHAR(255) NOT NULL,
@@ -20,15 +20,19 @@ CREATE TABLE dogs (
     medication VARCHAR(255),
     groomer VARCHAR(255),
     miscellaneous VARCHAR(255),
-    owner_id INTEGER REFERENCES users(user_id)
+    owner_id INTEGER NOT NULL,
+    FOREIGN KEY (owner_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE transactions (
     transaction_id SERIAL PRIMARY KEY,
-    owner_id INTEGER REFERENCES users(user_id),
-    dog_id INTEGER REFERENCES dogs(dog_id),
-    sitter_id INTEGER REFERENCES users(user_id),
+    owner_id INTEGER,
+    dog_id INTEGER,
+    sitter_id INTEGER,
     date_start DATE,
     date_end DATE,
-    invoice DECIMAL(10, 2)
+    invoice DECIMAL(10, 2),
+    FOREIGN KEY (owner_id) REFERENCES users(user_id),
+    FOREIGN KEY (dog_id) REFERENCES dogs(dog_id),
+    FOREIGN KEY (sitter_id) REFERENCES users(user_id)
 );
