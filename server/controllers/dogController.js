@@ -11,7 +11,6 @@ const pool = new Pool({
   port: 5432,
 });
 
-
 const dogController = {};
 
 dogController.addDog = async (req, res, next) => {
@@ -27,24 +26,32 @@ dogController.addDog = async (req, res, next) => {
     owner_id,
   } = req.body;
   // console.log('there was an attempt to create a dog')
- try {
+  try {
     const result = await pool.query(
       'INSERT INTO dogs (dog_name, age, weight, breed, meals, medication, groomer, miscellaneous, owner_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      [name, age, weight, breed, meals, medication, groomer, miscellaneous, owner_id]
+      [
+        name,
+        age,
+        weight,
+        breed,
+        meals,
+        medication,
+        groomer,
+        miscellaneous,
+        owner_id,
+      ]
     );
-    console.log("result at dogController.addDog: ", result.rows[0])
+    console.log('result at dogController.addDog: ', result.rows[0]);
     // Send the inserted dog data back to the client if needed
     res.locals.currentDog = result.rows[0];
     next();
   } catch (error) {
-      return next({
-        log: `Error happened at middleware dogController.addDog ${error}`,
-        message: { error: 'Dog database profile creation error' }}
-      );
+    return next({
+      log: `Error happened at middleware dogController.addDog ${error}`,
+      message: { error: 'Dog database profile creation error' },
+    });
   }
-}
-  
-
+};
 
 // //function to initialize the SQL dog table
 
@@ -77,37 +84,37 @@ dogController.addDog = async (req, res, next) => {
 
 dogController.fetchDogs = async (req, res, next) => {
   console.log('fetchDogs started');
-    // const userId = req.body.ssid;
-    // const role = req.body.role;
+  // const userId = req.body.ssid;
+  // const role = req.body.role;
   // const dogs = [];
   //query text
   try {
     // if (role === 'owner') {
 
     // const user = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
-      //jarod's info hardcoded for presentation 
-      const response = await pool.query(`SELECT u.first_name as Owner,d.* FROM dogs d join users u ON d.owner_id = u.user_id
+    //jarod's info hardcoded for presentation
+    const response =
+      await pool.query(`SELECT u.first_name as Owner,d.* FROM dogs d join users u ON d.owner_id = u.user_id
         where d.owner_id = 6;`);
-      //query for owner's dogs
-      //Dogs.find()
-      console.log('returning results', response);
+    //query for owner's dogs
+    //Dogs.find()
+    console.log('returning results', response);
     // } else {
-      //query for sitter's dogs
-      // const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
-      // console.log('fetching dogs for sitter', response);
+    //query for sitter's dogs
+    // const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
+    // console.log('fetching dogs for sitter', response);
     // }
-  if (response.length === 0) {
-    //error handling
-    return next();
-  } else {
-      res.locals.dogs = response;
+    if (response.length === 0) {
+      //error handling
+      return next();
+    } else {
+      res.locals.dogs = response.rows;
 
       return next();
+    }
+  } catch (error) {
+    console.error('Error fetching dogs:', response.status);
   }
- } catch (error) {
-  console.error('Error fetching dogs:', response.status)
- }
 };
-
 
 module.exports = dogController;
