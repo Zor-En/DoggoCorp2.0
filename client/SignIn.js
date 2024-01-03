@@ -115,21 +115,22 @@ export default function SignIn() {
 
       const username = formData.get('userName');
       const password = formData.get('password');
-      const user = await signInUser(username, password);
-      console.log('user log in: ', user);
 
-      // if successful
+      const user = await signInUser(username, password);
+      console.log('user log in ', user);
+      if (user.error) {
+        throw new Error(user.error);
+      }
+      updateUser(user);
       setSnackbarMessage('Login successful!');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
       navigate('/homepage');
     } catch (error) {
-      // if error
-      setSnackbarMessage('Login failed!');
+      setSnackbarMessage('Login failed!' + error);
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     } finally {
-      // turn off loading bar
       setLoading(false);
     }
   };
