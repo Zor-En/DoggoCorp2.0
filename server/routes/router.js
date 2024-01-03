@@ -32,7 +32,7 @@ router.get('/getAllUsers/', userController.getAllUsers, (req, res) => {
 });
 
 router.get(
-  '/fetchDogs/',
+  '/fetchDogs/:userId',
   // () => {console.log('starting fetch'); return next()},
   dogController.fetchDogs,
   (req, res) => {
@@ -50,7 +50,6 @@ router.get('/signin/:googleId', userController.verifyUser, (req, res) => {
 router.post('/addDog', dogController.addDog, (req, res) => {
   res.status(200).json(res.locals.currentDog);
 });
-
 
 // app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
 //   // if (res.locals.session) {

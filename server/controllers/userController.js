@@ -86,6 +86,7 @@ userController.verifyUser = async (req, res, next) => {
 
 userController.noOAuthLogIn = async (req, res, next) => {
   const { username, password } = req.body;
+  console.log(req.body);
 
   try {
     const data = await pool.query(

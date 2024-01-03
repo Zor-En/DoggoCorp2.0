@@ -76,12 +76,16 @@ dogController.fetchDogs = async (req, res, next) => {
   // const role = req.body.role;
   // const dogs = [];
   //query text
+  const user_id = req.params.userId;
   try {
     // if (role === 'owner') {
 
     // const user = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
     //jarod's info hardcoded for presentation
-    const response = await pool.query(`SELECT * FROM dogs`);
+    const response = await pool.query(
+      'SELECT * FROM dogs WHERE owner_id = $1;',
+      [user_id]
+    );
     res.locals.dogs = response.rows;
     console.log(res.locals.dogs);
     return next();

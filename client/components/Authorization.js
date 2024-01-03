@@ -54,6 +54,16 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
   };
 
+  const fetchDogs = (userId) =>
+    fetch(`http://localhost:3000/fetchDogs/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+
   const addDog = (dogData) =>
     fetch(`http://localhost:3000/addDog`, {
       method: 'POST',
@@ -75,6 +85,7 @@ export const AuthProvider = ({ children }) => {
         updateUser,
         signInUser,
         addDog,
+        fetchDogs,
       }}
     >
       {children}
