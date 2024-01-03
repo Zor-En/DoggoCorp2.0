@@ -19,6 +19,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const signInUser = (username, password) => {
+    console.log(username, password);
+    const body = { username, password };
+    console.log('body is', body);
+    fetch(`http://localhost:3000/login/no-oauth`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+  };
+
   const createUser = (newUser) =>
     fetch(`http://localhost:3000/signup`, {
       method: 'POST',
@@ -65,7 +80,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, getUser, createUser, logout, updateUser }}
+      value={{ user, getUser, createUser, logout, updateUser, signInUser }}
     >
       {children}
     </AuthContext.Provider>
