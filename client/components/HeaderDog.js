@@ -17,12 +17,14 @@ import MenuItem from '@mui/material/MenuItem';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MenuIcon from '@mui/icons-material/Menu';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { useNavigate } from 'react-router';
 import { HeaderDogStyle } from '../stylesheets/HeaderStyle';
+import { useAuth } from './Authorization';
 
 export default function HeaderDog() {
+  const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -38,6 +40,7 @@ export default function HeaderDog() {
 
   const handleSignOut = () => {
     if (text === 'Logout') {
+      logout();
       navigate('/');
     }
   };
@@ -51,17 +54,16 @@ export default function HeaderDog() {
     }
   };
 
+  const shadowColor = blue[50];
   const renderMenu = (
     <div>
       <ThemeProvider theme={HeaderDogStyle.theme}>
         <Button
-          variant='contained'
-          aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup='true'
+          aria-controls={open ? 'basic-menu' : undefined}
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
-          style={HeaderDogStyle.buttonStyle}
-          sx={HeaderDogStyle.buttonStyle}
+          {...HeaderDogStyle.buttonStyle}
         >
           Menu
         </Button>

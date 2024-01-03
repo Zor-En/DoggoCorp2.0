@@ -38,8 +38,7 @@ export default function SignUp() {
   };
 
   const navigate = useNavigate();
-  const { createUser } = useAuth();
-  const { updateUser } = useAuth();
+  const { createUser, updateUser, user } = useAuth();
 
   const handleSignInClick = () => {
     navigate('/signin');
@@ -91,14 +90,6 @@ export default function SignUp() {
   const CreateUser = async (googleId, email, isWatcher) => {
     const form = document.getElementById('form');
     const formData = new FormData(form);
-    // console.log(formData.get('firstName'))
-    // console.log(formData.get('lastName'))
-    // console.log(formData.get('userName'))
-    // console.log(formData.get('password'))
-    // console.log(formData.get('phoneNumber'))
-    // console.log(googleId)
-    // console.log(email)
-    // console.log('CreatUser Watcher State:',isWatcher)
 
     const newUser = {
       firstname: formData.get('firstName'),
@@ -110,15 +101,12 @@ export default function SignUp() {
       email: email,
       watcher: isWatcher,
     };
-
+    console.log('newUser: ', newUser);
     try {
-      const userId = await createUser(newUser);
-      if (response.ok) {
-        updateUser(newUser);
-        return userId;
-      } else {
-        console.error('Unable to create user:');
-      }
+      const signedUpUser = await createUser(newUser);
+      updateUser(signedUpUser);
+      console.log('in SignUp.js line 109', signedUpUser);
+      return signedUpUser;
     } catch (error) {
       console.error('Error creating user:', error);
     }
@@ -218,9 +206,16 @@ export default function SignUp() {
                 fullWidth
                 mt={2} /*
               onClick={handleSignIn}*/
+                onClick={async () => {
+                  await CreateUser(undefined, undefined, watcher);
+                  setSnackbarMessage('Signup successful!');
+                  setSnackbarSeverity('success');
+                  setSnackbarOpen(true);
+                  navigate('/homepage');
+                }}
                 disabled={loading}
               >
-                Sign In
+                Sign Up
               </Button>
               {loading && (
                 <LinearProgress color='primary' sx={{ marginTop: 2 }} />
