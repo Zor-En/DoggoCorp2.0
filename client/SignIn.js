@@ -29,7 +29,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const { getUser } = useAuth();
-  const { updateUser } = useAuth();
+  const { updateUser, signInUser } = useAuth();
 
   // close snakbar alert if clicked off screen
   const handleSnackbarClose = (event, reason) => {
@@ -40,7 +40,7 @@ export default function SignIn() {
   };
 
   // if users click dign up redirect to sign up screen
-  const handleSignInClick = () => {
+  const handleSignUpClick = () => {
     navigate('/signup');
   };
 
@@ -106,10 +106,17 @@ export default function SignIn() {
       // fake loading time
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const googleIdToken = response.credential;
+      // const googleIdToken = response.credential;
 
       // Send the token to the server for verification
-      await sendTokenToServer(googleIdToken);
+      // await sendTokenToServer(googleIdToken);
+      const form = document.getElementById('form');
+      const formData = new FormData(form);
+
+      const username = formData.get('userName');
+      const password = formData.get('password');
+      const user = await signInUser(username, password);
+      console.log('user log in: ', user);
 
       // if successful
       setSnackbarMessage('Login successful!');
@@ -164,15 +171,17 @@ export default function SignIn() {
               <Typography {...signinTypographyStyle}>Sign in</Typography>
             </Box>
 
-            <Box component='form'>
+            <Box component='form' id='form'>
               <TextField
                 label='Username'
+                name='userName'
                 type='username'
                 fullWidth
                 margin='normal'
               />
               <TextField
                 label='Password'
+                name='password'
                 type='password'
                 fullWidth
                 margin='normal'
@@ -208,7 +217,7 @@ export default function SignIn() {
                 Don't have an account?{' '}
                 <Link
                   style={{ cursor: 'pointer' }}
-                  onClick={handleSignInClick}
+                  onClick={handleSignUpClick}
                   variant='body2'
                 >
                   Sign up
