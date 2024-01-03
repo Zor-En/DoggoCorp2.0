@@ -113,7 +113,7 @@ export default function SignIn() {
       const form = document.getElementById('form');
       const formData = new FormData(form);
 
-      const username = formData.get('userName');
+      const username = formData.get('username');
       const password = formData.get('password');
       const user = await signInUser(username, password);
       console.log('user log in: ', user);
