@@ -34,6 +34,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import eboshi from '../../assets/eboshi.jpg';
 import { useAuth } from './Authorization';
+import { cardStyle, containerStyle } from '../stylesheets/MainCardStyle';
 
 const headerFont = createTheme({
   //this shit is not working
@@ -52,27 +53,13 @@ const headerFont = createTheme({
 
 export default function MainCard() {
   const [dogsArr, setDogsArr] = useState([]);
-  let { user } = useAuth();
-  // user = 6; //temporary hard coding
-  // console.log('MainCard User:', user.googleId);
+  const { user, fetchDogs } = useAuth();
+  const userId = user.user_id;
   const getDogs = async () => {
     try {
-      const requestOptions = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'Application/JSON',
-        },
-        // body: JSON.stringify({ userId: user.googleId }),
-      };
-      console.log('getting dogs from database associated with userID: ', user);
-      const response = await fetch(
-        'http://localhost:3000/fetchDogs/',
-        requestOptions
-      );
-      const data = await response.json();
-      if (!response.ok) console.log('ERROR, not 200');
-      console.log('dogs', data.rows);
-      setDogsArr(data.rows);
+      const dogs = await fetchDogs(userId);
+      console.log(dogs);
+      setDogsArr(dogs);
       // console.log('all dogs', dogsArr);
     } catch (error) {
       console.log(error, 'error accessing database');
@@ -83,84 +70,66 @@ export default function MainCard() {
     getDogs();
   }, []);
 
-  const boxBorder = blue[50];
-  const cardStyle = {
-    minWidth: 455,
-    // flexBasis: "calc(50% - 30px)",
-    margin: '8px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Pixelify Sans',
-    padding: 3,
-    boxShadow: 3,
-    borderRadius: 2,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)', //transparent
-    border: 2,
-    borderColor: boxBorder,
-  };
-
-  // makes two columns for two cards per row
-  const containerStyle = {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '16px',
-    justifyContent: 'center',
-  };
-
   return (
     <div style={containerStyle}>
       <ThemeProvider theme={headerFont}>
-        <Card sx={cardStyle}>
-          <CardHeader
-            fontFamily='Pixelify Sans'
-            title='Eboshi'
-            titleTypographyProps={{ variant: 'h3' }}
-            sx={{
-              mb: 1,
-              color: 'pink',
-              textShadow:
-                '-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e',
-            }}
-          />
-          <CardMedia
-            component='img'
-            height='250'
-            image={eboshi}
-            alt='Pixelized picture of dog -?'
-            sx={{ objectFit: 'contain', mb: 1 }}
-          />
-          <CardContent sx={{ textAlign: 'center' }}>
-            <Typography variant='body' color='text.secondary' sx={{ mb: 2 }}>
-              Basic Dog Info
-            </Typography>
-            <br></br>
-            <Button variant='outlined' sx={{ mt: 2 }}>
-              Edit
-            </Button>
-          </CardContent>
-          <CardActions
-            sx={{
-              justifyContent: 'center',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant='body2' color='text.secondary' sx={{ mb: 1 }}>
-              Add / Remove Watcher
-            </Typography>
-            <Box sx={{ display: 'flex' }}>
-              <IconButton aria-label='add'>
-                <AddCircleIcon color='primary' />
-              </IconButton>
-              <IconButton aria-label='remove'>
-                <RemoveCircleIcon color='primary' />
-              </IconButton>
-            </Box>
-          </CardActions>
-        </Card>
+        {dogsArr.map((dog) => (
+          <DogCard dog={dog} />
+        ))}
       </ThemeProvider>
     </div>
+  );
+}
+
+function DogCard({ dog }) {
+  return (
+    <Card sx={cardStyle}>
+      <CardHeader
+        fontFamily='Pixelify Sans'
+        title={dog.dog_name}
+        titleTypographyProps={{ variant: 'h3' }}
+        sx={{
+          mb: 1,
+          color: 'pink',
+          textShadow:
+            '-1px -1px white, 1px 1px hotpink, 2px 2px hotpink, 3px 3px 3px #9e9e9e',
+        }}
+      />
+      <CardMedia
+        component='img'
+        height='250'
+        image={eboshi}
+        alt='Pixelized picture of dog -?'
+        sx={{ objectFit: 'contain', mb: 1 }}
+      />
+      <CardContent sx={{ textAlign: 'center' }}>
+        <Typography variant='body' color='text.secondary' sx={{ mb: 2 }}>
+          Basic Dog Info
+        </Typography>
+        <br></br>
+        <Button variant='outlined' sx={{ mt: 2 }}>
+          Edit
+        </Button>
+      </CardContent>
+      <CardActions
+        sx={{
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant='body2' color='text.secondary' sx={{ mb: 1 }}>
+          Add / Remove Watcher
+        </Typography>
+        <Box sx={{ display: 'flex' }}>
+          <IconButton aria-label='add'>
+            <AddCircleIcon color='primary' />
+          </IconButton>
+          <IconButton aria-label='remove'>
+            <RemoveCircleIcon color='primary' />
+          </IconButton>
+        </Box>
+      </CardActions>
+    </Card>
   );
 }

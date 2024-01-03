@@ -1,4 +1,4 @@
-const pool = require('../models/databaseModel')
+const pool = require('../models/databaseModel');
 
 const dogController = {};
 
@@ -30,7 +30,6 @@ dogController.addDog = async (req, res, next) => {
         owner_id,
       ]
     );
-    console.log('result at dogController.addDog: ', result.rows[0]);
     // Send the inserted dog data back to the client if needed
     res.locals.currentDog = result.rows[0];
     next();
@@ -77,29 +76,19 @@ dogController.fetchDogs = async (req, res, next) => {
   // const role = req.body.role;
   // const dogs = [];
   //query text
+  const user_id = req.params.userId;
   try {
     // if (role === 'owner') {
 
     // const user = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
     //jarod's info hardcoded for presentation
-    const response = await pool.query(`SELECT u.first_name as Owner,d.* FROM dogs d join users u ON d.owner_id = u.user_id
-        where d.owner_id = 6;`);
-    //query for owner's dogs
-    //Dogs.find()
-    console.log('returning results', response);
-    // } else {
-    //query for sitter's dogs
-    // const response = await fetch('/fetchDogs?query=SELECT * FROM DOGS');
-    // console.log('fetching dogs for sitter', response);
-    // }
-    if (response.length === 0) {
-      //error handling
-      return next();
-    } else {
-      res.locals.dogs = response.rows;
-
-      return next();
-    }
+    const response = await pool.query(
+      'SELECT * FROM dogs WHERE owner_id = $1;',
+      [user_id]
+    );
+    res.locals.dogs = response.rows;
+    console.log(res.locals.dogs);
+    return next();
   } catch (error) {
     console.error('Error fetching dogs:', error);
   }
