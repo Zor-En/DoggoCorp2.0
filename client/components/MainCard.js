@@ -88,13 +88,21 @@ function DogCard({ dog, handleDelete }) {
   console.log('dog:', dog.dog_name);
   console.log('meals: ', dog.meals);
 
-  if (dog.meals === '{}') dog.meals = [];
-
-  if (typeof dog.meals === 'string') {
-    dog.meals = JSON.parse(dog.meals).map((meal) => {
-      const mealTime = meal.times.split('T')[1].split('.')[0];
-      return { ...meal, times: mealTime };
-    });
+  // Check if meals is a string and not an empty object
+  if (typeof dog.meals === 'string' && dog.meals !== '{}') {
+    try {
+      dog.meals = JSON.parse(dog.meals);
+      if (Array.isArray(dog.meals)) {
+        dog.meals = dog.meals.map((meal) => {
+          const mealTime = meal.times.split('T')[1].split('.')[0];
+          return { ...meal, times: mealTime };
+        });
+      } else {
+        console.error('Parsed meals is not an array:', dog.meals);
+      }
+    } catch (error) {
+      console.error('Error parsing meals JSON:', error);
+    }
   }
 
   console.log('meals:', dog.meals);

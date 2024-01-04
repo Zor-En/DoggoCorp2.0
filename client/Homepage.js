@@ -11,15 +11,35 @@ import { useNavigate } from 'react-router';
 const HomePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [username, setUser] = useState(false);
+
   // console.log('Homepage User:', user);
 
+  // useEffect(() => {
+  //   console.log('Homepage User:', user);
+  //   if (!user) {
+  //     console.log('there is no user');
+  //     navigate('/');
+  //   }
+  // }, [user, navigate]);
+
   useEffect(() => {
-    console.log('Homepage User:', user);
-    if (!user) {
-      console.log('there is no user');
-      navigate('/');
-    }
-  }, [user, navigate]);
+    const checkAuthentication = async () => {
+      try {
+        // a request to server to verify the JWT token
+        const response = await fetch('/#/homepage'); 
+        const data = await response.json()
+        console.log('auth data in authorization useeff', data)
+        if (response.ok && data.authenticated) {
+          navigate('/homepage');
+        } else {
+          navigate('/');
+        }
+      } catch (error) {
+      }
+    };
+    checkAuthentication();
+  }, []);
 
   if (!user) return null;
 

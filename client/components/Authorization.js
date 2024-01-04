@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(false);
 
   const getUser = async (googleId) => {
     try {
@@ -33,6 +33,8 @@ export const AuthProvider = ({ children }) => {
       .then((res) => res.json())
       .catch((err) => err);
   };
+
+
 
   const createUser = (newUser) =>
     fetch(`http://localhost:3000/signup`, {

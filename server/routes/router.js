@@ -8,12 +8,16 @@ const dogController = require('../controllers/dogController');
 const router = express.Router();
 
 // routers
+router.get('/homepage', userController.verifyRefreshToken, (req, res) => {
+  res.status(200).json({ authenticated: true, username: req.body.username});
+});
+
 router.post(
   '/signup',
   userController.addUser,
   (req, res) => {
     res.status(200).json(res.locals.newUser);
-    if (res.locals.session) {
+    if (!res.locals.session) {
       console.log('Signed up successfully!');
       return res.redirect('/homepage');
     }
@@ -24,6 +28,7 @@ router.post('/login/no-oauth', userController.noOAuthLogIn, (req, res) => {
   console.log('/login/no-oauth route hit');
   res.status(200).json(res.locals.user);
 });
+
 
 router.get('/getAllUsers/', userController.getAllUsers, (req, res) => {
   res.status(200).json(res.locals.allUsers);

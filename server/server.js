@@ -6,6 +6,8 @@ const { OAuth2Client } = require('google-auth-library');
 const cookieParser = require('cookie-parser');
 const { Pool } = require('pg');
 
+const userController = require('./controllers/userController');
+
 const apiRouter = require('./routes/router');
 
 const PORT = process.env.PORT || 3000;
@@ -50,6 +52,7 @@ app.post('/verify-token', async (req, res) => {
   }
 });
 
+
 app.use((req, res, next) => {
   // Set the Referrer-Policy header to no-referrer-when-downgrade
   res.setHeader('Referrer-Policy', 'no-referrer-when-downgrade');
@@ -63,6 +66,7 @@ app.use(
 
 // set up routing to routes here
 app.use('/', apiRouter);
+
 
 // app.get((req, res) => {
 //   console.log('going to add dog page');
