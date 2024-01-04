@@ -54,10 +54,10 @@ const headerFont = createTheme({
 export default function MainCard() {
   const [dogsArr, setDogsArr] = useState([]);
   const { user, fetchDogs } = useAuth();
-  const userId = user.user_id;
+  // const userId = user.user_id;
   const getDogs = async () => {
     try {
-      const dogs = await fetchDogs(userId);
+      const dogs = await fetchDogs(1);
       console.log(dogs);
       setDogsArr(dogs);
       // console.log('all dogs', dogsArr);
@@ -74,7 +74,7 @@ export default function MainCard() {
     <div style={containerStyle}>
       <ThemeProvider theme={headerFont}>
         {dogsArr.map((dog) => (
-          <DogCard dog={dog} />
+          <DogCard dog={dog} key={dog.dog_id} />
         ))}
       </ThemeProvider>
     </div>
@@ -98,19 +98,19 @@ function DogCard({ dog }) {
       <CardMedia
         component='img'
         height='250'
-        image={eboshi}
+        // image={eboshi}
+        src={dog.photo}
         alt='Pixelized picture of dog -?'
         sx={{ objectFit: 'contain', mb: 1 }}
       />
-      <CardContent sx={{ textAlign: 'center' }}>
-        <Typography variant='body' color='text.secondary' sx={{ mb: 2 }}>
-          Basic Dog Info
-        </Typography>
-        <br></br>
-        <Button variant='outlined' sx={{ mt: 2 }}>
-          Edit
-        </Button>
-      </CardContent>
+
+      {Object.keys(dog)
+        .filter(
+          (key) => !['dog_id', 'owner_id', 'dog_name', 'groomer'].includes(key)
+        )
+        .map((key) => (
+          <DogDetails detail={key} data={dog[key]} key={key} />
+        ))}
       <CardActions
         sx={{
           justifyContent: 'center',
@@ -131,5 +131,21 @@ function DogCard({ dog }) {
         </Box>
       </CardActions>
     </Card>
+  );
+}
+
+function DogDetails({ detail, data }) {
+  return (
+    <CardContent
+      sx={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}
+    >
+      <Typography variant='body' color='text.secondary' sx={{ mb: 2 }}>
+        {detail}: {data}
+      </Typography>
+      <br></br>
+      <Button variant='outlined' sx={{ mt: 2 }}>
+        Edit
+      </Button>
+    </CardContent>
   );
 }

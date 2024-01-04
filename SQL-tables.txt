@@ -1,7 +1,7 @@
-CREATE TABLE users (
+CREATE CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
-    user_name VARCHAR(255),
-    password VARCHAR(255),
+    user_name VARCHAR(255) UNQIUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
     google_id VARCHAR(255),
     email VARCHAR(255),
     first_name VARCHAR(255),
@@ -14,9 +14,11 @@ CREATE TABLE dogs (
     dog_id SERIAL PRIMARY KEY,
     dog_name VARCHAR(255) NOT NULL,
     age INT,
+    photo VARCHAR(255),
     birthdate DATE,
     weight DECIMAL(5, 2),
     breed VARCHAR(255),
+    photo VARCHAR(255),
     meals VARCHAR(255),
     medication VARCHAR(255),
     groomer VARCHAR(255),
