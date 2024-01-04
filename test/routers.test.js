@@ -1,56 +1,61 @@
 const request = require("supertest");
-const fs = require("fs");
 const server = "http://localhost:3000";
 
 describe("Routes", () => {
-  describe("/fetchDogs/", () => {
-    describe("GET", () => {
-      it("responds with 200 status and data containing dog info", () => {
+  describe("/signup", () => {
+    describe("POST", () => {
+      it("responds with 200 status and new user in db", () => {
         return request(server)
-          .get("/fetchDogs/")
+          .post("/signup")
+          .send({
+            firstname: "hi1",
+            lastname: "hi1",
+            username: "hi222",
+            password: "hi1",
+            phoneNumber: 100,
+            googleId: "hi",
+            email: "hii",
+            watcher: "false"
+          })
+          .expect(200); //this creates a user every time
+      });
+
+      it("responds with 500 if username or password is not inputed", () => {
+        return request(server)
+          .post("/signup")
+          .send({
+            username: null,
+            password: null,
+          })
+          .expect(500); //needed to alter columns in database for this to work
+      });
+    });
+  });
+
+  describe("/login/no-oauth", () => {
+    describe("POST", () => {
+      it("responds with 200 status and successful login", () => {
+        return request(server)
+          .post("/login/no-oauth")
+          .send({
+            username: "test",
+            password: "test",
+          })
           .expect("Content-Type", "application/json; charset=utf-8")
           .expect(200);
       });
     });
+  });
+});
 
-    describe("/signup", () => {
-      describe("POST", () => {
-        it("responds with 200 status and new user in db", () => {
-          return request(server)
-            .post("/signup")
-            .send({
-              username: "123",
-              password: "test",
-              is_owner: false
-            })
-            .expect(200); //this creates a user every time
-        });
-
-        it("responds with 500 if username or password is not inputed", () => {
-          return request(server)
-            .post("/signup")
-            .send({
-              username: null,
-              password: null,
-            })
-            .expect(500); //needed to alter columns in database for this to work
-        });
-      });
-    });
-
-    describe("/login/no-oauth", () => {
-      describe("POST", () => {
-        it("responds with 200 status and successful login", () => {
-          return request(server)
-            .post("/login/no-oauth")
-            .send({
-              username: "test",
-              password: "test",
-            })
-            .expect("Content-Type", "application/json; charset=utf-8")
-            .expect(200);
-        });
-      });
+describe("/fetchDogs/:userId", () => {
+  describe("GET", () => {
+    it("responds with 200 status and data containing dog info", () => {
+      const id = 1
+      return request(server)
+        .get(`/fetchDogs/${id}`)
+        .expect("Content-Type", "application/json; charset=utf-8")
+        .expect(200);
     });
   });
 
@@ -60,9 +65,17 @@ describe("Routes", () => {
         return request(server)
           .post("/addDog")
           .send({
-            name: "Shadow",
-            age: 2,
-            owner_id: 2,
+            name: "lz",
+            age: 1,
+            weight: 0,
+            breed: "hi",
+            meals: {},
+            medication: null,
+            groomer: null,
+            miscellaneous: {},
+            owner_id: 1,
+            birthday: null,
+            photo: null
           })
           .expect("Content-Type", "application/json; charset=utf-8")
           .expect(200);

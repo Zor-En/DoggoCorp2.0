@@ -1,9 +1,9 @@
 const express = require('express');
 
-const cookieController = require('../controllers/cookieController');
+
 const userController = require('../controllers/userController');
 const dogController = require('../controllers/dogController');
-const sessionController = require('../controllers/sessionController');
+
 
 const router = express.Router();
 
@@ -11,8 +11,6 @@ const router = express.Router();
 router.post(
   '/signup',
   userController.addUser,
-  // sessionController.startSession,
-  // cookieController.setSSIDCookie,
   (req, res) => {
     res.status(200).json(res.locals.newUser);
     if (res.locals.session) {

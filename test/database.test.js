@@ -17,7 +17,7 @@ describe('Database Model Tests', () => {
         const mockUser = { 
             user_id: userId, 
             user_name: 'claire0',
-            password: '1234',
+            password: '123400',
             google_id: null,
             email: null,
             first_name: 'Claire',
