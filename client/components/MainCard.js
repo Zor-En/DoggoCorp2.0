@@ -14,19 +14,19 @@ import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
 import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
 import {
   Box,
-  BoxShadow,
   Button,
-  TextField,
-  Input,
-  InputAdornment,
-  InputLabelProps,
-  InputLabel,
-  FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Tooltip,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Collapse,
 } from '@mui/material';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import '../stylesheets/LandingPage.css';
@@ -35,6 +35,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import eboshi from '../../assets/eboshi.jpg';
 import { useAuth } from './Authorization';
 import { cardStyle, containerStyle } from '../stylesheets/MainCardStyle';
+import { useNavigate } from 'react-router';
 
 const headerFont = createTheme({
   //this shit is not working
@@ -53,11 +54,11 @@ const headerFont = createTheme({
 
 export default function MainCard() {
   const [dogsArr, setDogsArr] = useState([]);
-  const { user, fetchDogs } = useAuth();
-  // const userId = user.user_id;
+  const { user, fetchDogs, deleteDog } = useAuth();
+  const userId = user.user_id;
   const getDogs = async () => {
     try {
-      const dogs = await fetchDogs(1);
+      const dogs = await fetchDogs(userId);
       console.log(dogs);
       setDogsArr(dogs);
       // console.log('all dogs', dogsArr);
@@ -65,28 +66,64 @@ export default function MainCard() {
       console.log(error, 'error accessing database');
     }
   };
+
   useEffect(() => {
     console.log('useEffect is working');
     getDogs();
   }, []);
 
+  const handleDelete = async (dogId) => {
+    try {
+      const deletedDog = await deleteDog(dogId);
+      console.log('dog deleted: ', deletedDog);
+      setDogsArr(dogsArr.filter((dog) => dog.dog_id !== dogId));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div style={containerStyle}>
       <ThemeProvider theme={headerFont}>
         {dogsArr.map((dog) => (
-          <DogCard dog={dog} key={dog.dog_id} />
+          <DogCard dog={dog} handleDelete={handleDelete} key={dog.dog_id} />
         ))}
       </ThemeProvider>
     </div>
   );
 }
 
-function DogCard({ dog }) {
+function DogCard({ dog, handleDelete }) {
+  console.log('dog:', dog.dog_name);
+
+  if (typeof dog.meals === 'string') {
+    dog.meals = JSON.parse(dog.meals).map((meal) => {
+      const mealTime = meal.times.split('T')[1].split('.')[0];
+      return { ...meal, times: mealTime };
+    });
+  }
+
+  console.log('meals:', dog.meals);
+
   return (
     <Card sx={cardStyle}>
       <CardHeader
         fontFamily='Pixelify Sans'
         title={dog.dog_name}
+        action={
+          <div>
+            <IconButton edge='end' aria-label='edit'>
+              <EditRoundedIcon />
+            </IconButton>
+            <IconButton
+              edge='end'
+              aria-label='delete'
+              onClick={() => handleDelete(dog.dog_id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        }
         titleTypographyProps={{ variant: 'h3' }}
         sx={{
           mb: 1,
@@ -98,19 +135,18 @@ function DogCard({ dog }) {
       <CardMedia
         component='img'
         height='250'
-        // image={eboshi}
         src={dog.photo}
         alt='Pixelized picture of dog -?'
         sx={{ objectFit: 'contain', mb: 1 }}
       />
 
-      {Object.keys(dog)
-        .filter(
-          (key) => !['dog_id', 'owner_id', 'dog_name', 'groomer'].includes(key)
-        )
-        .map((key) => (
-          <DogDetails detail={key} data={dog[key]} key={key} />
-        ))}
+      <List>
+        <BasicInfo info='breed' data={dog.breed} />
+        <BasicInfo info='age' data={dog.age} />
+        <BasicInfo info='weight' data={dog.weight + ' lb'} />
+        <BasicInfo info='birthday' data={dog.birthdate.split('T')[0]} />
+        <ListInfo info='meals' list={dog.meals} />
+      </List>
       <CardActions
         sx={{
           justifyContent: 'center',
@@ -134,18 +170,47 @@ function DogCard({ dog }) {
   );
 }
 
-function DogDetails({ detail, data }) {
+function BasicInfo({ info, data }) {
   return (
-    <CardContent
-      sx={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}
-    >
-      <Typography variant='body' color='text.secondary' sx={{ mb: 2 }}>
-        {detail}: {data}
-      </Typography>
-      <br></br>
-      <Button variant='outlined' sx={{ mt: 2 }}>
-        Edit
-      </Button>
-    </CardContent>
+    <ListItem>
+      <Box textAlign='right' style={{ paddingRight: 5 }}>
+        {info}:{' '}
+      </Box>
+      <ListItemText
+        secondaryTypographyProps={{ align: 'left' }}
+        secondary={data}
+      />
+    </ListItem>
+  );
+}
+
+function ListInfo({ info, list }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <ListItemButton onClick={() => setOpen(!open)}>
+        <ListItemText primary={info} />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+      <Collapse in={open} timeout='auto' unmountOnExit>
+        <List component='div' disablePadding>
+          {list.map((item) => (
+            <ListItem key={item.times}>
+              <ListItemText primary={item.type} style={{ paddingRight: 10 }} />
+              <ListItemText
+                primary='instruction'
+                secondary={item.instructions}
+                style={{ paddingRight: 5 }}
+              />
+              <ListItemText
+                primary='time'
+                secondary={item.times}
+                style={{ paddingRight: 5 }}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Collapse>
+    </div>
   );
 }

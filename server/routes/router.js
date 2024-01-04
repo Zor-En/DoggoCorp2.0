@@ -54,6 +54,10 @@ router.post(
   }
 );
 
+router.delete('/deleteDog/:dogId', dogController.deleteDog, (req, res) => {
+  console.log('dog deleted: ', res.locals.deletedDog);
+  res.status(200).json({ deleted: res.locals.deletedDog });
+});
 // app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
 //   // if (res.locals.session) {
 //   console.log('Going to homepage');

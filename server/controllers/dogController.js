@@ -91,6 +91,20 @@ dogController.updateDogPhoto = (req, res, next) => {
     );
 };
 
+dogController.deleteDog = (req, res, next) => {
+  const dogId = req.params.dogId;
+  return pool
+    .query('DELETE FROM dogs WHERE dog_id = $1 RETURNING *;', [dogId])
+    .then((data) => (res.locals.deletedDog = data.rows[0]))
+    .then(() => next())
+    .catch((error) =>
+      next({
+        log: `Error happened at middleware dogController.deleteDog  ${error}`,
+        message: { error: 'error deleting dog' + error },
+      })
+    );
+};
+
 // //function to initialize the SQL dog table
 
 // dogController.createDogTable = async (req, res, next) => {
