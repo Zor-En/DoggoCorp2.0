@@ -36,6 +36,7 @@ import {
   DoggoBoxAddingStyle,
 } from './stylesheets/DoggoStyle';
 import { useAuth } from './components/Authorization';
+import { DateField } from '@mui/x-date-pickers';
 
 //for custom file upload button
 // import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -224,6 +225,7 @@ const DogInputPage = () => {
         minHeight='80vh' // Full screen height
         // sx={{ backgroundColor: 'pink' }}
       >
+        <DogForm />
         <Box component='form' onSubmit={handleSubmit} noValidate sx={formStyle}>
           <Typography {...DoggoTypographyStyle}>
             Add Your Dog's Information
@@ -250,6 +252,7 @@ const DogInputPage = () => {
               required
               sx={DoggoTextFieldStyle}
             />
+            <DateField />
             <TextField
               label='Weight'
               name='weight'
@@ -293,7 +296,6 @@ const DogInputPage = () => {
               <AddCircleIcon color='primary' />
             </IconButton>
           </Box>
-
           {dogData.meals.map((meal, index) => (
             <Box key={index} sx={{ width: '100%', mb: 2 }}>
               <Typography sx={{ mr: 2, marginBottom: 2 }}>{`Meal ${
@@ -352,6 +354,7 @@ const DogInputPage = () => {
               </IconButton>
             </Box>
           ))}
+
           {/* handles meds adding/subtracting */}
           <Box sx={DoggoBoxAddingStyle}>
             <Typography variant='h6' sx={{ mr: 2 }}>
@@ -563,5 +566,149 @@ const DogInputPage = () => {
     </div>
   );
 };
+
+function DogForm() {
+  return (
+    <Box
+      component='form'
+      noValidate
+      sx={formStyle}
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log(e.target.name.value);
+      }}
+    >
+      <Typography {...DoggoTypographyStyle}>
+        Add Your Dog's Information
+      </Typography>
+
+      <TextField
+        label="Dog's Name"
+        name='name'
+        type='text'
+        required
+        fullWidth
+        autoFocus
+        margin='normal'
+        sx={DoggoTextFieldStyle}
+      />
+
+      <Box sx={DoggoBoxAgeAndWeightStyle}>
+        <TextField
+          label='Age'
+          name='age'
+          type='text'
+          required
+          sx={DoggoTextFieldStyle}
+        />
+        <DateField
+          label='Birthday'
+          name='birthday'
+          required
+          sx={DoggoTextFieldStyle}
+        />
+        <TextField
+          label='Weight'
+          name='weight'
+          type='text'
+          required
+          sx={DoggoTextFieldStyle}
+          InputProps={{
+            endAdornment: <InputAdornment position='end'>lbs</InputAdornment>,
+          }}
+        />
+      </Box>
+
+      <TextField
+        label='Breed'
+        name='breed'
+        type='text'
+        fullWidth
+        margin='normal'
+        sx={DoggoTextFieldStyle}
+      />
+
+      <Button
+        type='submit'
+        fullWidth
+        variant='contained'
+        sx={{ mt: 3, mb: 2, zIndex: 10 }}
+      >
+        Submit
+      </Button>
+    </Box>
+  );
+}
+
+function AddingMeal({ handleAddMeal }) {
+  return (
+    <div>
+      <Box sx={DoggoBoxAddingStyle}>
+        <Typography variant='h6' sx={{ mr: 2 }}>
+          Add Meals
+        </Typography>
+        <IconButton onClick={handleAddMeal}>
+          <AddCircleIcon color='primary' />
+        </IconButton>
+      </Box>
+      {dogData.meals.map((meal, index) => (
+        <Box key={index} sx={{ width: '100%', mb: 2 }}>
+          <Typography sx={{ mr: 2, marginBottom: 2 }}>{`Meal ${
+            index + 1
+          }:`}</Typography>
+          <Box sx={DoggoBoxDataStyle}>
+            <FormControl sx={{ mr: 1, flex: 1 }}>
+              <InputLabel htmlFor={`meal-type-select-${index}`}>
+                Meal Type
+              </InputLabel>
+              <Select
+                focused
+                labelId={`meal-type-label-${index}`}
+                label='Meal Type'
+                id={`meal-type-select-${index}`}
+                value={meal.type}
+                onChange={(e) => handleMealTypeChange(index, e.target.value)}
+                sx={DoggoTextFieldStyle}
+              >
+                <MenuItem value='Breakfast'>Breakfast</MenuItem>
+                <MenuItem value='Lunch'>Lunch</MenuItem>
+                <MenuItem value='Dinner'>Dinner</MenuItem>
+                <MenuItem value='Snack'>Snack</MenuItem>
+              </Select>
+            </FormControl>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <TimePicker
+                label='Time'
+                name={`meal-${index}-time`}
+                value={meal.times}
+                onChange={(newTime) =>
+                  handleMealChange(index, 'times', newTime)
+                }
+                sx={DoggoTextFieldStyle}
+                renderInput={(params) => (
+                  <TextField {...params} sx={{ flex: 2 }} />
+                )}
+              />
+            </LocalizationProvider>
+          </Box>
+          <TextField
+            label='Instructions:'
+            fullWidth
+            multiline
+            name={`meal-${index}-instructions`}
+            value={meal.instructions}
+            onChange={handleChange}
+            margin='normal'
+            sx={DoggoTextFieldStyle}
+          />
+
+          <IconButton onClick={() => handleRemoveMeal(index)}>
+            <RemoveCircleIcon color='primary' />
+          </IconButton>
+        </Box>
+      ))}
+    </div>
+  );
+}
 
 export default DogInputPage;
