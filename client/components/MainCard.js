@@ -65,7 +65,6 @@ export default function MainCard() {
   const [dogsArr, setDogsArr] = useState([]);
   const { user, fetchDogs, deleteDog } = useAuth();
   const userId = user.user_id;
-  const navigate = useNavigate();
   const getDogs = async () => {
     try {
       const dogs = await fetchDogs(userId);
@@ -106,19 +105,7 @@ function DogCard({ dog }) {
             <IconButton edge='end' aria-label='edit'>
               <EditRoundedIcon />
             </IconButton>
-            <IconButton
-              edge='end'
-              aria-label='delete'
-              onClick={() => {
-                // try {
-                //   const deletedDog = await deleteDog(dog.dog_id);
-                //   console.log('deleted dog successfully: ', deletedDog);
-                //   navigate('homepage');
-                // } catch (error) {
-                //   console.log('delete dog failed: ', error);
-                // }
-              }}
-            >
+            <IconButton edge='end' aria-label='delete'>
               <DeleteIcon />
             </IconButton>
           </div>
@@ -134,7 +121,6 @@ function DogCard({ dog }) {
       <CardMedia
         component='img'
         height='250'
-        // image={eboshi}
         src={dog.photo}
         alt='Pixelized picture of dog -?'
         sx={{ objectFit: 'contain', mb: 1 }}
