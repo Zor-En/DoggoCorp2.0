@@ -48,7 +48,7 @@ describe("Routes", () => {
   });
 });
 
-describe("/fetchDogs/:userId", () => {
+describe("/fetchDogs/", () => {
   describe("GET", () => {
     it("responds with 200 status and data containing dog info", () => {
       const id = 1
@@ -69,10 +69,10 @@ describe("/fetchDogs/:userId", () => {
             age: 1,
             weight: 0,
             breed: "hi",
-            meals: {},
+            meals: [],
             medication: null,
             groomer: null,
-            miscellaneous: {},
+            miscellaneous: [],
             owner_id: 1,
             birthday: null,
             photo: null
@@ -89,4 +89,14 @@ describe("/fetchDogs/:userId", () => {
       });
     });
   });
+  describe("/deleteDog/:dogId", () => {
+    describe('/DELETE', ()=> {
+      it('deletes a dog from the database', ()=> {
+        const dogId = 1
+        return request(server)
+          .delete(`/deleteDog/${dogId}`)
+          .expect(200)
+      })
+    })
+  })
 });

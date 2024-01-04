@@ -70,7 +70,7 @@ export default function Menu() {
             disablePadding
             onClick={() => {
               console.log('logging out');
-              logout();
+              handleSignOut()
               navigate('/');
             }}
           >

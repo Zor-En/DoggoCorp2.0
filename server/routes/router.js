@@ -58,17 +58,8 @@ router.delete('/deleteDog/:dogId', dogController.deleteDog, (req, res) => {
   console.log('dog deleted: ', res.locals.deletedDog);
   res.status(200).json({ deleted: res.locals.deletedDog });
 });
-// app.use('/homepage', sessionController.isLoggedIn, (req, res) => {
-//   // if (res.locals.session) {
-//   console.log('Going to homepage');
-//   return res.redirect('/homepage');
-//   // }
-// });
 
-//to query dogs
-// app.get('/fetchDogs', dogController.fetchDogs, (req, res) => {
-//   res.status(200).json(res.locals.dogs);
-// });
+
 
 // //to submit to addDogs
 // app.post('/addDog', dogController.createDogTable, (req, res) => {
