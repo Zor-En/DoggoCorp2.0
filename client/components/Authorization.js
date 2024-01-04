@@ -64,6 +64,16 @@ export const AuthProvider = ({ children }) => {
       .then((res) => res.json())
       .catch((err) => console.log(err));
 
+  const deleteDog = (dogId) =>
+    fetch(`http://localhost:3000/deleteDog/${dogId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log(err));
+
   const addDog = (dogData) =>
     fetch(`http://localhost:3000/addDog`, {
       method: 'POST',
@@ -86,6 +96,7 @@ export const AuthProvider = ({ children }) => {
         signInUser,
         addDog,
         fetchDogs,
+        deleteDog,
       }}
     >
       {children}

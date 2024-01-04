@@ -70,7 +70,7 @@ dogController.saveDogPhoto = (req, res, next) => {
 
 dogController.updateDogPhoto = (req, res, next) => {
   const localImageUrl = res.locals.localImageUrl;
-  pool
+  return pool
     .query('UPDATE dogs SET photo = $1 WHERE dog_id =$2 RETURNING *', [
       localImageUrl,
       res.locals.currentDog.dog_id,
@@ -81,6 +81,20 @@ dogController.updateDogPhoto = (req, res, next) => {
       next({
         log: `Error happened at middleware dogController.updateDogPhoto ${error}`,
         message: { error: 'Dog database profile creation error' },
+      })
+    );
+};
+
+dogController.deleteDog = (req, res, next) => {
+  const dogId = req.params.dogId;
+  return pool
+    .query('DELETE FROM dogs WHERE dog_id = $1 RETURNING *;', [dogId])
+    .then((data) => (res.locals.deletedDog = data.rows[0]))
+    .then(() => next())
+    .catch((error) =>
+      next({
+        log: `Error happened at middleware dogController.deleteDog  ${error}`,
+        message: { error: 'error deleting dog' + error },
       })
     );
 };

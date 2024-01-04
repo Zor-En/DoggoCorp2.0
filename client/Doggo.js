@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footers from './components/Footer';
 import Sky from './components/Sky';
 import HeaderDog from './components/HeaderDog';
@@ -45,7 +45,18 @@ import { useAuth } from './components/Authorization';
 
 const DogInputPage = () => {
   const { user, addDog } = useAuth();
-  console.log('in Doggo.js', user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('Doggo page User:', user);
+    if (!user) {
+      console.log('there is no user');
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  if (!user) return null;
+  // console.log('in Doggo.js', user);
   const [dogData, setDogData] = useState({
     name: '',
     owner_id: user.user_id,
@@ -60,7 +71,7 @@ const DogInputPage = () => {
     photo: null,
   });
 
-  const navigate = useNavigate();
+  console.log('in adding dog: ', dogData);
 
   const handleChange = (e) => {
     if (e.target.name.startsWith('meal-')) {
@@ -180,6 +191,7 @@ const DogInputPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(dogData);
+    dogData.meals = JSON.stringify(dogData.meals);
     // Submit logic here
     try {
       const response = await addDog(dogData);
@@ -200,21 +212,6 @@ const DogInputPage = () => {
       console.error('Error adding dog:', error.message);
     }
   };
-
-  // for file upload button
-  // const VisuallyHiddenInput = styled("input")({
-  //   clip: "rect(0 0 0 0)",
-  //   clipPath: "inset(50%)",
-  //   height: 1,
-  //   overflow: "hidden",
-  //   position: "absolute",
-  //   bottom: 0,
-  //   left: 0,
-  //   whiteSpace: "nowrap",
-  //   width: 1,
-  // });
-
-  const boxBorder = blue[50];
 
   return (
     <div>
@@ -556,7 +553,7 @@ const DogInputPage = () => {
             fullWidth
             variant='contained'
             onClick={handleSubmit}
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, zIndex: 10 }}
           >
             Submit
           </Button>
