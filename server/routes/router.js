@@ -11,8 +11,8 @@ const router = express.Router();
 router.post(
   '/signup',
   userController.addUser,
-  sessionController.startSession,
-  cookieController.setSSIDCookie,
+  // sessionController.startSession,
+  // cookieController.setSSIDCookie,
   (req, res) => {
     res.status(200).json(res.locals.newUser);
     if (res.locals.session) {
