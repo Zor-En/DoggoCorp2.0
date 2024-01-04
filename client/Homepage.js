@@ -64,32 +64,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-//  <Grid
-//    container
-//    item
-//    xs={12}
-//    sx={{
-//      position: "fixed",
-//      top: 0,
-//      width: "100%",
-//      height: { xs: "5%", md: "5%" },
-//    }}
-//  >
-//    <Grid
-//      container
-//      alignItems="center"
-//      justifyContent="space-between"
-//      marginTop={-1}
-//    >
-//      <Grid item>{/* <Menu /> */}</Grid>
-//      <Grid item>
-//        <Button size="small" color="secondary" variant="text">
-//          Button 1
-//        </Button>
-//        <Button size="small" color="secondary" variant="text">
-//          Button 2
-//        </Button>
-//      </Grid>
-//    </Grid>
-//  </Grid>;
