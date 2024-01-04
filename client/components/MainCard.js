@@ -54,10 +54,10 @@ const headerFont = createTheme({
 export default function MainCard() {
   const [dogsArr, setDogsArr] = useState([]);
   const { user, fetchDogs } = useAuth();
-  // const userId = user.user_id;
+  const userId = user.user_id;
   const getDogs = async () => {
     try {
-      const dogs = await fetchDogs(1);
+      const dogs = await fetchDogs(userId);
       console.log(dogs);
       setDogsArr(dogs);
       // console.log('all dogs', dogsArr);
