@@ -2,16 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../stylesheets/App.css';
-import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
-import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
 import {
   Box,
   Button,
@@ -28,14 +22,11 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { blue } from '@mui/material/colors';
 import '../stylesheets/LandingPage.css';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import eboshi from '../../assets/eboshi.jpg';
 import { useAuth } from './Authorization';
 import { cardStyle, containerStyle } from '../stylesheets/MainCardStyle';
-import { useNavigate } from 'react-router';
 
 const headerFont = createTheme({
   //this shit is not working
@@ -95,6 +86,9 @@ export default function MainCard() {
 
 function DogCard({ dog, handleDelete }) {
   console.log('dog:', dog.dog_name);
+  console.log('meals: ', dog.meals);
+
+  if (dog.meals === '{}') dog.meals = [];
 
   if (typeof dog.meals === 'string') {
     dog.meals = JSON.parse(dog.meals).map((meal) => {
@@ -144,7 +138,12 @@ function DogCard({ dog, handleDelete }) {
         <BasicInfo info='breed' data={dog.breed} />
         <BasicInfo info='age' data={dog.age} />
         <BasicInfo info='weight' data={dog.weight + ' lb'} />
-        <BasicInfo info='birthday' data={dog.birthdate.split('T')[0]} />
+
+        <BasicInfo
+          info='birthday'
+          data={dog.birthdate ? dog.birthdate.split('T')[0] : "haven't set"}
+        />
+
         <ListInfo info='meals' list={dog.meals} />
       </List>
       <CardActions
