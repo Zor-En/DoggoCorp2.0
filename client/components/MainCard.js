@@ -12,21 +12,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../stylesheets/App.css';
 import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
 import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
-import {
-  Box,
-  BoxShadow,
-  Button,
-  TextField,
-  Input,
-  InputAdornment,
-  InputLabelProps,
-  InputLabel,
-  FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Tooltip,
-} from '@mui/material';
+import { Box, Button, List, ListItem, ListItemText } from '@mui/material';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import '../stylesheets/LandingPage.css';
@@ -87,6 +77,16 @@ function DogCard({ dog }) {
       <CardHeader
         fontFamily='Pixelify Sans'
         title={dog.dog_name}
+        action={
+          <div>
+            <IconButton edge='end' aria-label='edit'>
+              <EditRoundedIcon />
+            </IconButton>
+            <IconButton edge='end' aria-label='delete'>
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        }
         titleTypographyProps={{ variant: 'h3' }}
         sx={{
           mb: 1,
@@ -98,19 +98,31 @@ function DogCard({ dog }) {
       <CardMedia
         component='img'
         height='250'
-        // image={eboshi}
         src={dog.photo}
         alt='Pixelized picture of dog -?'
         sx={{ objectFit: 'contain', mb: 1 }}
       />
 
-      {Object.keys(dog)
-        .filter(
-          (key) => !['dog_id', 'owner_id', 'dog_name', 'groomer'].includes(key)
-        )
-        .map((key) => (
-          <DogDetails detail={key} data={dog[key]} key={key} />
-        ))}
+      <List>
+        {Object.keys(dog)
+          .filter(
+            (key) =>
+              !['dog_id', 'owner_id', 'dog_name', 'groomer', 'photo'].includes(
+                key
+              )
+          )
+          .map((key) => (
+            <ListItem key={key}>
+              <Box textAlign='right' style={{ paddingRight: 5 }}>
+                {key}:{' '}
+              </Box>
+              <ListItemText
+                secondaryTypographyProps={{ align: 'left' }}
+                secondary={dog[key]}
+              />
+            </ListItem>
+          ))}
+      </List>
       <CardActions
         sx={{
           justifyContent: 'center',
@@ -131,21 +143,5 @@ function DogCard({ dog }) {
         </Box>
       </CardActions>
     </Card>
-  );
-}
-
-function DogDetails({ detail, data }) {
-  return (
-    <CardContent
-      sx={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}
-    >
-      <Typography variant='body' color='text.secondary' sx={{ mb: 2 }}>
-        {detail}: {data}
-      </Typography>
-      <br></br>
-      <Button variant='outlined' sx={{ mt: 2 }}>
-        Edit
-      </Button>
-    </CardContent>
   );
 }
