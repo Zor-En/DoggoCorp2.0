@@ -26,7 +26,15 @@ import {
   Select,
   SelectChangeEvent,
   Tooltip,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from '@mui/material';
+
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import '../stylesheets/LandingPage.css';
@@ -35,6 +43,8 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import eboshi from '../../assets/eboshi.jpg';
 import { useAuth } from './Authorization';
 import { cardStyle, containerStyle } from '../stylesheets/MainCardStyle';
+import { deleteDog } from '../../server/controllers/dogController';
+import { useNavigate } from 'react-router';
 
 const headerFont = createTheme({
   //this shit is not working
@@ -53,8 +63,9 @@ const headerFont = createTheme({
 
 export default function MainCard() {
   const [dogsArr, setDogsArr] = useState([]);
-  const { user, fetchDogs } = useAuth();
+  const { user, fetchDogs, deleteDog } = useAuth();
   const userId = user.user_id;
+  const navigate = useNavigate();
   const getDogs = async () => {
     try {
       const dogs = await fetchDogs(userId);
@@ -82,11 +93,36 @@ export default function MainCard() {
 }
 
 function DogCard({ dog }) {
+  if (dog.birthdate) {
+    dog.birthdate = dog.birthdate.split('T')[0];
+  }
   return (
     <Card sx={cardStyle}>
       <CardHeader
         fontFamily='Pixelify Sans'
         title={dog.dog_name}
+        action={
+          <div>
+            <IconButton edge='end' aria-label='edit'>
+              <EditRoundedIcon />
+            </IconButton>
+            <IconButton
+              edge='end'
+              aria-label='delete'
+              onClick={() => {
+                // try {
+                //   const deletedDog = await deleteDog(dog.dog_id);
+                //   console.log('deleted dog successfully: ', deletedDog);
+                //   navigate('homepage');
+                // } catch (error) {
+                //   console.log('delete dog failed: ', error);
+                // }
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        }
         titleTypographyProps={{ variant: 'h3' }}
         sx={{
           mb: 1,
@@ -104,13 +140,26 @@ function DogCard({ dog }) {
         sx={{ objectFit: 'contain', mb: 1 }}
       />
 
-      {Object.keys(dog)
-        .filter(
-          (key) => !['dog_id', 'owner_id', 'dog_name', 'groomer'].includes(key)
-        )
-        .map((key) => (
-          <DogDetails detail={key} data={dog[key]} key={key} />
-        ))}
+      <List>
+        {Object.keys(dog)
+          .filter(
+            (key) =>
+              !['dog_id', 'owner_id', 'dog_name', 'groomer', 'photo'].includes(
+                key
+              )
+          )
+          .map((key) => (
+            <ListItem key={key}>
+              <Box textAlign='right' style={{ paddingRight: 5 }}>
+                {key}:{' '}
+              </Box>
+              <ListItemText
+                secondaryTypographyProps={{ align: 'left' }}
+                secondary={dog[key]}
+              />
+            </ListItem>
+          ))}
+      </List>
       <CardActions
         sx={{
           justifyContent: 'center',
@@ -131,21 +180,5 @@ function DogCard({ dog }) {
         </Box>
       </CardActions>
     </Card>
-  );
-}
-
-function DogDetails({ detail, data }) {
-  return (
-    <CardContent
-      sx={{ textAlign: 'center', display: 'flex', alignItems: 'center' }}
-    >
-      <Typography variant='body' color='text.secondary' sx={{ mb: 2 }}>
-        {detail}: {data}
-      </Typography>
-      <br></br>
-      <Button variant='outlined' sx={{ mt: 2 }}>
-        Edit
-      </Button>
-    </CardContent>
   );
 }
