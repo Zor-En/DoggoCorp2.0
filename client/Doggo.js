@@ -289,7 +289,11 @@ function AddingMeal({ meals, setMeals }) {
             sx={DoggoTextFieldStyle}
           />
 
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              setMeals(meals.filter((m, i) => i !== index));
+            }}
+          >
             <RemoveCircleIcon color='primary' />
           </IconButton>
         </Box>
@@ -375,7 +379,11 @@ function AddingOthers({ data, setData, dataName }) {
             margin='normal'
             sx={DoggoTextFieldStyle}
           />
-          <IconButton onClick={() => handleRemoveMedication(index)}>
+          <IconButton
+            onClick={() => {
+              setData(data.filter((el, i) => i !== index));
+            }}
+          >
             <RemoveCircleIcon color='primary' />
           </IconButton>
         </Box>
