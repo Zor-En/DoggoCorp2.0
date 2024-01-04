@@ -52,6 +52,11 @@ export default function HeaderDog() {
     if (text === 'Profile') {
       navigate('/homepage');
     }
+    if (text === 'Logout') {
+      console.log('logging out...');
+      logout();
+      navigate('/');
+    }
   };
 
   const shadowColor = blue[50];
