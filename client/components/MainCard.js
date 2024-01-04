@@ -85,10 +85,16 @@ export default function MainCard() {
 }
 
 function DogCard({ dog, handleDelete }) {
-  console.log('dog:', dog.dog_name);
-  console.log('meals: ', dog.meals);
-
-  if (dog.meals === '{}') dog.meals = [];
+  for (const key of ['meals', 'medication', 'groomer', 'miscellaneous']) {
+    if (
+      dog[key] === '{}' ||
+      dog[key] === null ||
+      dog[key] === '"[]"' ||
+      dog[key] === '[]'
+    ) {
+      dog[key] = [];
+    }
+  }
 
   if (typeof dog.meals === 'string') {
     dog.meals = JSON.parse(dog.meals).map((meal) => {
@@ -97,7 +103,15 @@ function DogCard({ dog, handleDelete }) {
     });
   }
 
-  console.log('meals:', dog.meals);
+  for (const key of ['medication', 'groomer', 'miscellaneous']) {
+    if (typeof dog[key] === 'string') {
+      dog[key] = JSON.parse(dog[key]).map((item) => {
+        const time = item.times.split('T')[1].split('.')[0];
+        const date = item.dates.split('T')[0];
+        return { ...item, times: time, dates: date };
+      });
+    }
+  }
 
   return (
     <Card sx={cardStyle}>
@@ -145,6 +159,9 @@ function DogCard({ dog, handleDelete }) {
         />
 
         <ListInfo info='meals' list={dog.meals} />
+        <ListInfo info='medications' list={dog.medication} />
+        <ListInfo info='groomer' list={dog.groomer} />
+        <ListInfo info='miscellaneous' list={dog.miscellaneous} />
       </List>
       <CardActions
         sx={{
@@ -185,6 +202,7 @@ function BasicInfo({ info, data }) {
 
 function ListInfo({ info, list }) {
   const [open, setOpen] = useState(false);
+  if (list.length === 0) return null;
   return (
     <div>
       <ListItemButton onClick={() => setOpen(!open)}>
